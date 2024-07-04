@@ -2,3 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 @import 'daisyui/dist/full.css';
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+

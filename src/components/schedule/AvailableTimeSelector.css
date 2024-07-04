@@ -1,0 +1,16 @@
+.rbc-allday-cell {
+    display: none !important;
+}
+
+.rbc-today {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: none !important;
+}
+
+.rbc-now {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: none !important;
+}
+

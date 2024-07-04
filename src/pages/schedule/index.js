@@ -1,32 +1,42 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {createSchedule, listSchedules} from "../../api/schedule/schedule";
+import {
+    createSchedule,
+    deleteSchedule,
+    listSchedules,
+    setAvailableTime,
+    setTimeZone
+} from "../../api/schedule/schedule";
 import Loading from "../../components/ui/Loading";
 import Error from "../../components/ui/Error";
 import {useRef, useState} from "react";
 import {queryClient} from "../../api";
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
+import AvailableTimeSelector from "../../components/schedule/AvailableTimeSelector";
+import {TrashIcon} from "@heroicons/react/24/solid";
+import TimeZoneSelector from "../../components/TimeZoneSelector";
+import {MINUTE} from "../../utils/constants";
 
-const CACHE_TIME = 30 * 60 * 1000;
 export default function Schedule() {
 
     const nameInputRef = useRef();
     const [isNameInputError, setIsNameInputError] = useState(false);
+    const [updatedSchedules, setUpdatedSchedules] = useState({})
+    const [updatedTimeZone, setUpdatedTimeZone] = useState({})
 
     const {
         data,
         isLoading,
         isError,
-        error
     } = useQuery({
         queryKey: ['schedules'],
         queryFn: (signal) => listSchedules({signal}),
-        staleTime: CACHE_TIME,
-        cacheTime: CACHE_TIME
+        staleTime: 30 * MINUTE,
+        cacheTime: 30 * MINUTE
     });
 
     const {
         mutate: createScheduleMutate,
         isPending: isPendingCreateSchedule
-
     } = useMutation({
         mutationFn: createSchedule,
         onSuccess: () => {
@@ -36,12 +46,41 @@ export default function Schedule() {
         }
     })
 
+    const {
+        mutate: deleteScheduleMutate,
+        isPending: isPendingDeleteSchedule,
+    } = useMutation({
+        mutationFn: deleteSchedule,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['schedules'])
+        }
+    })
+
+    const {
+        mutate: setAvailableTimeMutate,
+        isPending: isPendingSetAvailableTime
+    } = useMutation({
+        mutationFn: setAvailableTime,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['schedules'])
+        }
+    })
+
+    const {
+        mutate: setTimeZoneMutate,
+        isPending: isPendingSetTimeZone
+    } = useMutation({
+        mutationFn: setTimeZone,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['schedules'])
+        }
+    })
+
     if (isLoading) {
         return <Loading/>
     }
 
     if (isError) {
-        console.log(error)
         return <Error/>
     }
 
@@ -54,9 +93,38 @@ export default function Schedule() {
         createScheduleMutate({name})
     }
 
+    const eventsChangeHandler = (scheduleId, availableTimes) => {
+        setUpdatedSchedules({
+            ...updatedSchedules, [scheduleId]: availableTimes
+        })
+    }
+
+    const timeZoneChangeHandler = (scheduleId, timezone) => {
+        setUpdatedTimeZone({
+            ...updatedTimeZone, [scheduleId]: timezone.value
+        })
+    }
+
+    const saveHandler = (scheduleId) => {
+
+        if (updatedTimeZone[scheduleId]) {
+            setTimeZoneMutate({
+                id: scheduleId,
+                timezone: updatedTimeZone[scheduleId]
+            })
+        }
+
+        if (!updatedSchedules[scheduleId]) {
+            return
+        }
+
+        setAvailableTimeMutate({
+            id: scheduleId,
+            availableTimes: updatedSchedules[scheduleId]
+        })
+    }
 
     return <div>
-
         <input ref={nameInputRef}
                type="text"
                placeholder="Schedule Name"
@@ -69,8 +137,7 @@ export default function Schedule() {
             {isPendingCreateSchedule ? <span className="loading loading-spinner text-primary"/> : "New"}
         </button>
 
-
-        <div role="tablist" className="tabs tabs-lifted tabs-lg">
+        <div role="tablist" className="tabs tabs-bordered tabs-lg mt-8">
             {
                 data.schedules.map((schedule) => {
                     return <>
@@ -79,10 +146,41 @@ export default function Schedule() {
                                role="tab"
                                className="tab"
                                aria-label={schedule.name}
-                                defaultChecked={schedule.id === data.schedules[0].id}
+                               defaultChecked={schedule.id === data.schedules[0].id}
                         />
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-                            {schedule.id}
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-4">
+
+                            <div className="flex justify-between my-4">
+                                <div className="flex justify-center items-center gap-2">
+                                    <label className="label label-text">Timezone</label>
+                                <TimeZoneSelector currentTimeZone={schedule.time_zone}
+                                                  onTimeZoneChange={(tz) => timeZoneChangeHandler(schedule.id, tz)}/>
+                                </div>
+
+                                <button className="btn btn-error"
+                                        onClick={() => deleteScheduleMutate({id: schedule.id})}
+                                        disabled={isPendingDeleteSchedule}>
+                                    {isPendingDeleteSchedule ?
+                                        <span key={schedule.id} className="loading loading-spinner text-white"/> :
+                                        <TrashIcon key={schedule.id} className="text-white h-5 w-5"/>}
+                                </button>
+                            </div>
+
+                            <AvailableTimeSelector
+                                key={schedule.id}
+                                availableTimes={schedule?.available_times}
+                                onEventsChange={(availableTimes) => eventsChangeHandler(schedule.id, availableTimes)}
+                            />
+
+
+                            <div className="flex justify-end py-4">
+                                <button className="btn btn-primary text-white"
+                                        onClick={() => saveHandler(schedule.id)}
+                                        disabled={isPendingSetAvailableTime || isPendingSetTimeZone}>
+                                    {isPendingSetAvailableTime || isPendingSetTimeZone ?
+                                        <span className="loading loading-spinner text-primary"/> : "Save"}
+                                </button>
+                            </div>
                         </div>
                     </>
                 })
