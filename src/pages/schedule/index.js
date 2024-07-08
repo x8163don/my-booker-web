@@ -14,7 +14,7 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import AvailableTimeSelector from "../../components/schedule/AvailableTimeSelector";
 import {TrashIcon} from "@heroicons/react/24/solid";
 import TimeZoneSelector from "../../components/TimeZoneSelector";
-import {MINUTE} from "../../utils/constants";
+import {CACHE_KEY, MINUTE} from "../../utils/constants";
 
 export default function Schedule() {
 
@@ -28,7 +28,7 @@ export default function Schedule() {
         isLoading,
         isError,
     } = useQuery({
-        queryKey: ['schedules'],
+        queryKey: [CACHE_KEY.SCHEDULES],
         queryFn: (signal) => listSchedules({signal}),
         staleTime: 30 * MINUTE,
         cacheTime: 30 * MINUTE
@@ -42,7 +42,7 @@ export default function Schedule() {
         onSuccess: () => {
             nameInputRef.current.value = ''
             setIsNameInputError(false)
-            queryClient.invalidateQueries(['schedules'])
+            queryClient.invalidateQueries([CACHE_KEY.SCHEDULES])
         }
     })
 
@@ -52,7 +52,7 @@ export default function Schedule() {
     } = useMutation({
         mutationFn: deleteSchedule,
         onSuccess: () => {
-            queryClient.invalidateQueries(['schedules'])
+            queryClient.invalidateQueries([CACHE_KEY.SCHEDULES])
         }
     })
 
@@ -62,7 +62,7 @@ export default function Schedule() {
     } = useMutation({
         mutationFn: setAvailableTime,
         onSuccess: () => {
-            queryClient.invalidateQueries(['schedules'])
+            queryClient.invalidateQueries([CACHE_KEY.SCHEDULES])
         }
     })
 
@@ -72,7 +72,7 @@ export default function Schedule() {
     } = useMutation({
         mutationFn: setTimeZone,
         onSuccess: () => {
-            queryClient.invalidateQueries(['schedules'])
+            queryClient.invalidateQueries([CACHE_KEY.SCHEDULES])
         }
     })
 
@@ -139,14 +139,14 @@ export default function Schedule() {
 
         <div role="tablist" className="tabs tabs-bordered tabs-lg mt-8">
             {
-                data.schedules.map((schedule) => {
+                data.map((schedule) => {
                     return <>
                         <input type="radio"
                                name="schedule-tabs"
                                role="tab"
                                className="tab"
                                aria-label={schedule.name}
-                               defaultChecked={schedule.id === data.schedules[0].id}
+                               defaultChecked={schedule.id === data[0].id}
                         />
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-4">
 

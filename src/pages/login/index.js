@@ -1,30 +1,64 @@
+import {useForm} from "react-hook-form";
+import {EnvelopeIcon} from "@heroicons/react/24/outline";
+import {useMutation} from "@tanstack/react-query";
+import {login} from "../../api/auth/auth";
+import {useNavigate} from "react-router-dom";
+import showAlert, {ALERT_TYPES} from "../../utils/alert";
+
 export default function Login() {
+
+    const navigate = useNavigate()
+
+    const {
+        register,
+        handleSubmit,
+        formState: {errors},
+    } = useForm({
+        defaultValues: {email: '',}
+    })
+
+    const {
+        mutate: emailLoginMutate,
+        isPending
+    } = useMutation({
+        mutationFn: login,
+        onSuccess: (data) => {
+            navigate("/login/email")
+        },
+        onError: (error) => {
+            showAlert(ALERT_TYPES.ERROR, error.message)
+        }
+    });
+
+    const handleLoginWithEmail = (data) => {
+        emailLoginMutate(data.email,"","email")
+    }
     return (
         <main className="min-h-screen flex items-center justify-center">
-            <div className="bg-gray-700 max-w-md p-8 shadow-lg rounded-lg">
+            <div className="bg-gray-700 w-full max-w-md p-8 shadow-lg rounded-lg">
                 <div className="avatar mb-8 flex justify-center">
                     <div className="w-24 rounded">
                         {/*TODO*/}
                         <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
                     </div>
                 </div>
-                <form className="">
+                <form onSubmit={handleSubmit(handleLoginWithEmail)}>
                     <div className="mb-4">
-                        <label className="input input-bordered flex items-center gap-2">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
-                                fill="currentColor"
-                                className="h-4 w-4 opacity-70">
-                                <path
-                                    d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"/>
-                                <path
-                                    d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"/>
-                            </svg>
-                            <input type="text" className="grow" placeholder="Email"/>
+                        <label
+                            className={"input input-bordered flex items-center gap-2 " + (errors.email ? "input-error" : "")}>
+                           <EnvelopeIcon className="w-5 h-5"/>
+                            <input type="email" className="grow" placeholder="Email" {...register("email", {
+                                required: true, pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,}
+                            })}/>
                         </label></div>
-                    <button className="w-full btn btn-primary text-white text-lg">
-                        以電子郵件繼續
+                    <button
+                        type="submit"
+                        className="w-full btn btn-primary text-white text-lg"
+                        disabled={isPending}
+                    >
+                        {
+                            isPending ? <span className="loading loading-spinner text-white"/> : '以電子郵件繼續'
+                        }
                     </button>
                 </form>
             </div>
