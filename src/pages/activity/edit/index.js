@@ -10,7 +10,7 @@ import {
 import Loading from "../../../components/ui/Loading";
 import Error from "../../../components/ui/Error";
 import {ArrowLeftIcon} from "@heroicons/react/24/outline";
-import showAlert, {ALERT_TYPES} from "../../../utils/alert";
+import {sendToast, TOAST_TYPES} from "../../../utils/toast";
 import {queryClient} from "../../../api";
 import sanitizeHtml from "sanitize-html";
 import {CACHE_KEY, MINUTE} from "../../../utils/constants";
@@ -59,7 +59,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, isOpen}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
 
@@ -80,7 +80,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, description}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
     const {
@@ -106,7 +106,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, dateRangeType, dateRangeDetail}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
 
@@ -132,7 +132,7 @@ export default function ActivityEdit() {
             },
             onError: (error, {id, scheduleID}, context) => {
                 queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-                showAlert(ALERT_TYPES.ERROR, error.message);
+                sendToast(TOAST_TYPES.ERROR, error.message)
             },
         }
     )
@@ -160,7 +160,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, before, after}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
 
@@ -185,7 +185,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, minimumScheduleBefore}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
 
@@ -210,7 +210,7 @@ export default function ActivityEdit() {
         },
         onError: (error, {id, startTimeIncrement}, context) => {
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
-            showAlert(ALERT_TYPES.ERROR, error.message);
+            sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
 

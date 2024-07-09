@@ -1,10 +1,31 @@
 import {Cog6ToothIcon, DocumentDuplicateIcon, PencilIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {createPortal} from "react-dom";
+import Clipboard from 'clipboard';
+import "react-toastify/dist/ReactToastify.css";
+import {sendToast, TOAST_TYPES} from "../../utils/toast";
 
-export default function ActivityCard({activity, onEdit, onDelete, onToggle}) {
 
+export default function ActivityCard({customer, activity, onEdit, onDelete, onToggle}) {
+
+    const copyRef = useRef(null);
     const [showDeleteConfirmModel, setShowDeleteConfirmModel] = useState(false)
+
+    useEffect(() => {
+        const clipboard = new Clipboard(copyRef.current);
+
+        clipboard.on('success', (e) => {
+            sendToast(TOAST_TYPES.SUCCESS, 'Copied to clipboard!')
+        });
+
+        clipboard.on('error', (e) => {
+            sendToast(TOAST_TYPES.ERROR, 'Failed to copy to clipboard!')
+        });
+
+        return () => {
+            clipboard.destroy();
+        };
+    }, []);
 
     const DeleteConfirmModal = ({onConfirm}) => (
         <div className="modal modal-open">
@@ -67,11 +88,16 @@ export default function ActivityCard({activity, onEdit, onDelete, onToggle}) {
                     <div>
                         {activity.duration},{activity.activity_type}
                     </div>
-                    <a className="link link-primary">View Booking Page</a>
+                    <a className="link link-primary"
+                       href={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}>View
+                        Booking Page</a>
                 </div>
                 <div className="divider my-0"></div>
                 <div className="card-actions justify-between">
-                    <button className="btn btn-primary text-white">
+                    <button
+                        ref={copyRef}
+                        data-clipboard-text={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}
+                        className="btn btn-primary text-white">
                         <DocumentDuplicateIcon className="h-5 w-5"/>
                         Copy link
                     </button>

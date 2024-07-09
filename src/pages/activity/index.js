@@ -1,17 +1,29 @@
 import ActivityCard from "../../components/activity/ActivityCard";
 import {useNavigate} from "react-router-dom";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {CACHE_KEY, MINUTE} from "../../utils/constants";
+import {CACHE_KEY, DAY, MINUTE} from "../../utils/constants";
 import {deleteActivity, listActivities, switchActivity} from "../../api/activity/activity";
 import Loading from "../../components/ui/Loading";
 import Error from "../../components/ui/Error";
 import {PlusIcon} from "@heroicons/react/24/outline";
 import {queryClient} from "../../api";
-import showAlert, {ALERT_TYPES} from "../../utils/alert";
+import {sendToast, TOAST_TYPES} from "../../utils/toast";
+import {me} from "../../api/customer";
 
 export default function Activity() {
 
     const navigate = useNavigate();
+
+    const {
+        data: customer,
+        isPending: isPendingAccounts,
+        isError: isErrorAccounts
+    } = useQuery({
+        queryKey: [CACHE_KEY.ACCOUNT],
+        queryFn: (signal) => me({signal: signal}),
+        cacheTime: 1 * DAY,
+        staleTime: 1 * DAY,
+    })
 
     const {
         data: activities,
@@ -33,7 +45,7 @@ export default function Activity() {
             queryClient.invalidateQueries([CACHE_KEY.ACTIVITY, data.activity_id])
         },
         onError: (error) => {
-            showAlert(ALERT_TYPES.ERROR, error.message)
+            sendToast(TOAST_TYPES.ERROR, error.message)
         }
     })
 
@@ -46,7 +58,7 @@ export default function Activity() {
             queryClient.invalidateQueries([CACHE_KEY.ACTIVITY, data.activity_id])
         },
         onError: (error) => {
-            showAlert(ALERT_TYPES.ERROR, error.message)
+            sendToast(TOAST_TYPES.ERROR, error.message)
         }
     })
 
@@ -64,11 +76,11 @@ export default function Activity() {
     }
 
 
-    if (isPendingActivities) {
+    if (isPendingAccounts || isPendingActivities) {
         return <Loading/>
     }
 
-    if (isErrorActivities) {
+    if (isErrorAccounts || isErrorActivities) {
         return <Error/>
     }
 
@@ -85,6 +97,7 @@ export default function Activity() {
         <div className="grid grid-cols-3 gap-4">
             {activities && activities.map((activity) => <ActivityCard
                 key={activity.id}
+                customer={customer}
                 activity={activity}
                 onDelete={handleDelete}
                 onEdit={handleEdit}

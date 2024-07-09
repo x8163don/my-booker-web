@@ -4,11 +4,10 @@ import {useForm} from "react-hook-form";
 import {useMutation} from "@tanstack/react-query";
 import {queryClient} from "../../../api";
 import {createActivity} from "../../../api/activity/activity";
-import showAlert, {ALERT_TYPES} from "../../../utils/alert";
+import {TOAST_TYPES, sendToast} from "../../../utils/toast";
 import {CACHE_KEY} from "../../../utils/constants";
 
 const CUSTOM = 'custom'
-
 
 export default function ActivityNew() {
 
@@ -39,7 +38,7 @@ export default function ActivityNew() {
             navigate('/activity/' + data.id + '/edit')
         },
         onError: (error) => {
-            showAlert(ALERT_TYPES.ERROR, error.message)
+            sendToast(TOAST_TYPES.ERROR, error.message)
         }
     })
 

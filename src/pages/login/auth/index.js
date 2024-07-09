@@ -2,7 +2,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {check} from "../../../api/auth/auth";
 import Cookies from 'js-cookie';
-import showAlert, {ALERT_TYPES} from "../../../utils/alert";
+import {TOAST_TYPES, sendToast} from "../../../utils/toast";
+import {ToastContainer} from "react-toastify";
+import {useMutation} from "@tanstack/react-query";
+import {createCustomer} from "../../../api/customer";
 
 
 export default function Auth() {
@@ -10,6 +13,19 @@ export default function Auth() {
     const navigate = useNavigate();
     const location = useLocation()
 
+    const {
+        mutate: createCustomerMutate,
+    } = useMutation({
+        mutationFn: ({signal}) => createCustomer({signal: signal}),
+        onSuccess: () => {
+            navigate("/activity");
+        },
+        onError: (error) => {
+            sendToast(TOAST_TYPES.ERROR, error.message)
+            Cookies.remove('token');
+            navigate('/login');
+        }
+    })
 
     useEffect(() => {
 
@@ -27,9 +43,9 @@ export default function Auth() {
 
             if (resp.ok) {
                 Cookies.set('token', token);
-                navigate("/activity");
+                createCustomerMutate({})
             } else {
-                showAlert(ALERT_TYPES.ERROR, "ErrTokenInvalid")
+                sendToast(TOAST_TYPES.ERROR, "ErrTokenInvalid")
                 Cookies.remove('token');
                 navigate('/login');
             }
@@ -53,5 +69,7 @@ export default function Auth() {
                 </div>
             </div>
         </div>
+        <ToastContainer/>
+
     </main>
 }

@@ -9,6 +9,7 @@ import Auth from "./pages/login/auth";
 import ActivityNew from "./pages/activity/new";
 import Email from "./pages/login/email";
 import ActivityEdit from "./pages/activity/edit";
+import Booking from "./pages/booking";
 
 export const router = createBrowserRouter([
     {
@@ -48,5 +49,10 @@ export const router = createBrowserRouter([
             {path: '', element: <Schedule/>}
         ]
     },
+    {
+        path: '/booking/:slug/:key',
+        element: <Booking/>,
+    }
+
 
 ])

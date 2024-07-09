@@ -3,7 +3,8 @@ import {EnvelopeIcon} from "@heroicons/react/24/outline";
 import {useMutation} from "@tanstack/react-query";
 import {login} from "../../api/auth/auth";
 import {useNavigate} from "react-router-dom";
-import showAlert, {ALERT_TYPES} from "../../utils/alert";
+import {TOAST_TYPES, sendToast} from "../../utils/toast";
+import {ToastContainer} from "react-toastify";
 
 export default function Login() {
 
@@ -26,12 +27,12 @@ export default function Login() {
             navigate("/login/email")
         },
         onError: (error) => {
-            showAlert(ALERT_TYPES.ERROR, error.message)
+            sendToast(TOAST_TYPES.ERROR, error.message)
         }
     });
 
     const handleLoginWithEmail = (data) => {
-        emailLoginMutate(data.email,"","email")
+        emailLoginMutate(data.email, "", "email")
     }
     return (
         <main className="min-h-screen flex items-center justify-center">
@@ -46,7 +47,7 @@ export default function Login() {
                     <div className="mb-4">
                         <label
                             className={"input input-bordered flex items-center gap-2 " + (errors.email ? "input-error" : "")}>
-                           <EnvelopeIcon className="w-5 h-5"/>
+                            <EnvelopeIcon className="w-5 h-5"/>
                             <input type="email" className="grow" placeholder="Email" {...register("email", {
                                 required: true, pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,}
                             })}/>
@@ -62,6 +63,7 @@ export default function Login() {
                     </button>
                 </form>
             </div>
+            <ToastContainer/>
         </main>
     );
 }
