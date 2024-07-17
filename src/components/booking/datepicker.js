@@ -17,7 +17,7 @@ import {
 import {ArrowLeftIcon, ArrowRightIcon,} from "@heroicons/react/24/outline";
 
 
-export default function DatePicker({timezone,allowAppointments, onTimeSelected,onTimeZoneChange}) {
+export default function DatePicker({timezone, allowAppointments, onTimeSelected, onTimeZoneChange}) {
 
     const [availableTimesDic, setAvailableTimesDic] = useState({})
     const [currentSelectDate, setCurrentSelectDate] = useState(null)
@@ -25,12 +25,12 @@ export default function DatePicker({timezone,allowAppointments, onTimeSelected,o
 
     useEffect(() => {
         setAvailableTimesDic(updateAvailableTimes())
-    }, [timezone, allowAppointments])
+    }, [timezone, allowAppointments, updateAvailableTimes])
 
 
     const updateAvailableTimes = () => {
         const dic = {}
-        allowAppointments.map((availableTime) => {
+        allowAppointments.forEach((availableTime) => {
             const date = toZonedTime(new Date(availableTime), timezone)
             const key = format(date, 'yyyy-MM-dd')
             if (!dic[key]) {

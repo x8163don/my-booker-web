@@ -51,7 +51,7 @@ export default function Auth() {
             }
         }
         verifyToken()
-    }, [])
+    }, [createCustomerMutate])
 
 
     return <main className="min-h-screen flex items-center justify-center">
@@ -61,7 +61,7 @@ export default function Auth() {
                 <div className="avatar mb-8 flex justify-center">
                     <div className="w-24 rounded">
                         {/*TODO*/}
-                        <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+                        <img alt="logo" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
                     </div>
                 </div>
                 <div className="mx-auto">

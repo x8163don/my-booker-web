@@ -87,7 +87,7 @@ export default function Booking() {
     }
 
     return <main className="min-h-screen flex items-center justify-center">
-        {page == 1 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
+        {page === 1 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
             <div className="card-body flex flex-col md:flex-row">
                 <div className="flex-1 w-1/2">
                     <h2 className="card-title text-white">{bookingDetail.name}</h2>
@@ -118,13 +118,13 @@ export default function Booking() {
         }
 
         {
-            page == 2 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
+            page === 2 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
                 <div className="card-body">
-                    <a className="link link-primary">
+                    <span className="link link-primary">
                         <ArrowLeftIcon
                             className="w-5 h-5 cursor-pointer"
                             onClick={() => setPage(1)}/>
-                    </a>
+                    </span>
                     <div className="flex-1 w-full text-center">
                         <h2 className="text-white items-center">預約時間</h2>
                         <div className="text-white text-lg">
@@ -185,7 +185,7 @@ export default function Booking() {
         }
 
         {
-            page == 3 && <div className="card bg-neutral text-neutral-content h-3/4 w-full lg:w-3/4 xl:w-1/2">
+            page === 3 && <div className="card bg-neutral text-neutral-content h-3/4 w-full lg:w-3/4 xl:w-1/2">
                 <div className="card-body items-center text-center">
                     <h2 className="card-title">預約完成</h2>
                     <div className="card-description text-white">

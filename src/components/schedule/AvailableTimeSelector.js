@@ -25,7 +25,7 @@ export default function AvailableTimeSelector({availableTimes, onEventsChange}) 
             }
         })
         setEvents(initEvents)
-    }, []);
+    }, [availableTimes]);
 
     useEffect(() => {
         const availableTimes = events.map((event) => {
@@ -39,7 +39,7 @@ export default function AvailableTimeSelector({availableTimes, onEventsChange}) 
         })
 
         onEventsChange(availableTimes)
-    }, [events]);
+    }, [events,onEventsChange]);
 
 
     const handleSelectSlot = ({start, end}) => {
