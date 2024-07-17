@@ -83,7 +83,7 @@ export default function Calendar() {
             const state = {
                 id: getIDFromToken(Cookies.get('token')),
             }
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${JSON.stringify(state)}`;
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${JSON.stringify(state)}&access_type=offline`;
             window.location.href = authUrl;
         } catch (e) {
             sendToast(TOAST_TYPES.ERROR, e.message)
