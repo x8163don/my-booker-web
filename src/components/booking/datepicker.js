@@ -23,11 +23,6 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
     const [currentSelectDate, setCurrentSelectDate] = useState(null)
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
-    useEffect(() => {
-        setAvailableTimesDic(updateAvailableTimes())
-    }, [timezone, allowAppointments, updateAvailableTimes])
-
-
     const updateAvailableTimes = () => {
         const dic = {}
         allowAppointments.forEach((availableTime) => {
@@ -40,6 +35,10 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
         })
         return dic
     }
+
+    useEffect(() => {
+        setAvailableTimesDic(updateAvailableTimes())
+    }, [timezone, allowAppointments])
 
     const renderHeader = () => {
         return (
