@@ -10,6 +10,7 @@ import ActivityNew from "./pages/activity/new";
 import Email from "./pages/login/email";
 import ActivityEdit from "./pages/activity/edit";
 import Booking from "./pages/booking";
+import Calendar from "./pages/calendar";
 
 export const router = createBrowserRouter([
     {
@@ -50,9 +51,14 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: '/booking/:slug/:key',
+        path: '/calendar',
+        element: <SideMenu/>,
+        children: [
+            {path: '', element: <Calendar/>}
+        ]
+    },
+    {
+        path: '/booking/:url_name/:booking_key',
         element: <Booking/>,
     }
-
-
 ])

@@ -9,4 +9,7 @@ export const CACHE_KEY = {
     ACTIVITY: 'activity',
     ACTIVITIES: 'activities',
     ACCOUNT: 'account',
+    BOOKING: 'booking',
+    CALENDAR: 'calendar',
+    CALENDARS: 'calendars',
 }

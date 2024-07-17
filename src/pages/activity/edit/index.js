@@ -16,6 +16,9 @@ import sanitizeHtml from "sanitize-html";
 import {CACHE_KEY, MINUTE} from "../../../utils/constants";
 import {useState} from "react";
 import {listSchedules} from "../../../api/schedule/schedule";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
+
 
 export default function ActivityEdit() {
     const params = useParams()
@@ -231,12 +234,12 @@ export default function ActivityEdit() {
         switchActivityMutate({id: activity.id, isOpen: e.target.checked})
     }
 
-    const handleOnChangeDescription = (e) => {
+    const handleOnChangeDescription = (text) => {
         if (descriptionMutateTimeoutId) {
             clearTimeout(descriptionMutateTimeoutId);
         }
 
-        const cleanDesc = sanitizeHtml(e.target.value)
+        const cleanDesc = sanitizeHtml(text)
         const newTimeoutId = setTimeout(() => {
             setDescriptionMutate({id: activity.id, description: cleanDesc})
         }, 1000);
@@ -325,8 +328,12 @@ export default function ActivityEdit() {
                         <label className="label">
                             <span className="label-text">活動說明</span>
                         </label>
-                        <textarea className="textarea" defaultValue={activity.description}
-                                  onChange={handleOnChangeDescription}/>
+                        {/*<textarea className="textarea" defaultValue={activity.description}*/}
+                        {/*          onChange={handleOnChangeDescription}/>*/}
+                        <ReactQuill theme="snow"
+                                    defaultValue={activity.description}
+                                    onChange={handleOnChangeDescription}
+                        />
                     </div>
 
                     <div className="form-control">

@@ -58,7 +58,7 @@ export default function Login() {
                         disabled={isPending}
                     >
                         {
-                            isPending ? <span className="loading loading-spinner text-white"/> : '以電子郵件繼續'
+                            isPending ? <span className="loading loading-spinner text-white"/> : '下一步'
                         }
                     </button>
                 </form>
