@@ -51,7 +51,7 @@ export default function Auth() {
             }
         }
         verifyToken()
-    }, [createCustomerMutate])
+    }, [createCustomerMutate, location.search, navigate])
 
 
     return <main className="min-h-screen flex items-center justify-center">

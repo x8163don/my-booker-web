@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {
     toZonedTime,
     format,
@@ -23,7 +23,7 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
     const [currentSelectDate, setCurrentSelectDate] = useState(null)
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
-    const updateAvailableTimes = () => {
+    const updateAvailableTimes = useCallback(() => {
         const dic = {}
         allowAppointments.forEach((availableTime) => {
             const date = toZonedTime(new Date(availableTime), timezone)
@@ -34,11 +34,11 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
             dic[key].push(date)
         })
         return dic
-    }
+    }, [timezone,allowAppointments]);
 
     useEffect(() => {
         setAvailableTimesDic(updateAvailableTimes())
-    }, [timezone, allowAppointments])
+    }, [updateAvailableTimes])
 
     const renderHeader = () => {
         return (
