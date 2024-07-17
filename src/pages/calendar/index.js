@@ -10,9 +10,8 @@ import {queryClient} from "../../api";
 import {FaGoogle} from "react-icons/fa";
 
 export default function Calendar() {
-    const clientId = '30736395894-5j9g1pjb20u3lu8hlfjvl1o0ok6j9bgq.apps.googleusercontent.com';
-    const redirectUri = 'http://localhost:8080/google/oauth/callback';
-    const scope = 'https://www.googleapis.com/auth/calendar email profile openid'
+    const redirectUri = `${process.env.REACT_APP_BASE_URL}/google/oauth/callback`;
+    const scope = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events email profile openid'
 
     const [calendarItems, setCalendarItems] = useState([]);
     const [targetCalendarItem, setTargetCalendarItem] = useState(null);
@@ -84,7 +83,7 @@ export default function Calendar() {
             const state = {
                 id: getIDFromToken(Cookies.get('token')),
             }
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${JSON.stringify(state)}`;
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${JSON.stringify(state)}`;
             window.location.href = authUrl;
         } catch (e) {
             sendToast(TOAST_TYPES.ERROR, e.message)
