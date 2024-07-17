@@ -1,5 +1,23 @@
 import Cookies from "js-cookie";
 
+
+export const handleGoogleOAuth = async ({signal}) => {
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/google/oauth`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Cookies.get('token')}`
+        },
+        AbortSignal: signal
+    })
+
+    if (!response.ok) {
+        throw new Error("Fail to get google oauth url");
+    }
+
+    return response
+}
+
 export const listCalendarSources = async ({signal}) => {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/calendar/all`, {
         method: 'GET',

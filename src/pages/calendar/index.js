@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import {sendToast, TOAST_TYPES} from "../../utils/toast";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {changeTargetCalendar, listCalendarSources} from "../../api/calendar";
+import {changeTargetCalendar, handleGoogleOAuth, listCalendarSources} from "../../api/calendar";
 import Loading from "../../components/ui/Loading";
 import Error from "../../components/ui/Error";
 import {useEffect, useState} from "react";
@@ -10,8 +10,6 @@ import {queryClient} from "../../api";
 import {FaGoogle} from "react-icons/fa";
 
 export default function Calendar() {
-    const redirectUri = `${process.env.REACT_APP_BASE_URL}/google/oauth/callback`;
-    const scope = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events email profile openid'
 
     const [calendarItems, setCalendarItems] = useState([]);
     const [targetCalendarItem, setTargetCalendarItem] = useState(null);
@@ -25,6 +23,17 @@ export default function Calendar() {
         cacheTime: 1 * DAY,
         staleTime: 1 * DAY,
         queryFn: (signal) => listCalendarSources({signal}),
+        onError: (error) => {
+            sendToast(TOAST_TYPES.ERROR, error.message)
+        },
+    })
+
+    const {
+        mutate: googleOauthMutate,
+    } = useMutation({
+        mutationFn: handleGoogleOAuth,
+        onSuccess:(resp)=>{
+        },
         onError: (error) => {
             sendToast(TOAST_TYPES.ERROR, error.message)
         },
@@ -79,15 +88,7 @@ export default function Calendar() {
     }
 
     const handleLogin = () => {
-        try {
-            const state = {
-                id: getIDFromToken(Cookies.get('token')),
-            }
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${JSON.stringify(state)}&access_type=offline`;
-            window.location.href = authUrl;
-        } catch (e) {
-            sendToast(TOAST_TYPES.ERROR, e.message)
-        }
+        googleOauthMutate()
     };
 
     const handleSave = () => {
@@ -129,18 +130,4 @@ export default function Calendar() {
         </label>
 
     </div>
-}
-
-function getIDFromToken(token) {
-    const parts = Cookies.get('token').split('.');
-
-    if (parts.length !== 3) {
-        throw new Error('Invalid JWT token');
-    }
-    const base64Payload = parts[1];
-    const jsonPayload = atob(base64Payload);
-    const payload = JSON.parse(jsonPayload);
-    const id = payload.id;
-
-    return id;
 }
