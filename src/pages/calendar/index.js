@@ -29,17 +29,6 @@ export default function Calendar() {
     })
 
     const {
-        mutate: googleOauthMutate,
-    } = useMutation({
-        mutationFn: handleGoogleOAuth,
-        onSuccess:(resp)=>{
-        },
-        onError: (error) => {
-            sendToast(TOAST_TYPES.ERROR, error.message)
-        },
-    })
-
-    const {
         mutate: changeTargetCalendarMutate,
     } = useMutation({
         mutationFn: changeTargetCalendar,
@@ -87,8 +76,13 @@ export default function Calendar() {
         return <Error/>
     }
 
-    const handleLogin = () => {
-        googleOauthMutate()
+    const handleLogin = async () => {
+        try {
+            const data = await handleGoogleOAuth();
+            window.location.href = data.url
+        } catch (error) {
+            sendToast(TOAST_TYPES.ERROR, error.message);
+        }
     };
 
     const handleSave = () => {
