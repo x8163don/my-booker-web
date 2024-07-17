@@ -122,7 +122,8 @@ export default function Calendar() {
             <button
                 className="btn btn-primary mt-4"
                 onClick={handleSave}
-                disabled={!!targetCalendarItem && targetCalendarItem?.is_target}>
+                // disabled={!!targetCalendarItem && targetCalendarItem?.is_target}
+            >
                 Save
             </button>
         </label>
