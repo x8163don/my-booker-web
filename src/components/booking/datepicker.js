@@ -34,7 +34,7 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
             dic[key].push(date)
         })
         return dic
-    }, [timezone,allowAppointments]);
+    }, [timezone, allowAppointments]);
 
     useEffect(() => {
         setAvailableTimesDic(updateAvailableTimes())
@@ -91,20 +91,22 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                 const cloneDay = day;
                 days.push(
                     <div className="h-12 flex-1 p-1">
-
-                        <div
-                            className={`flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 
+                        <div className="indicator">
+                            {availableTimesDic[formattedDate] && availableTimesDic[formattedDate].length > 0 && (
+                                <span
+                                    className="indicator-item indicator-bottom indicator-center badge badge-xs badge-success top-7"/>
+                            )}
+                            <div
+                                className={`flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 
                             ${isSameDay(day, new Date()) ? 'bg-blue-500 text-white' : ''} ${
-                                isSameDay(day, currentSelectDate) ? 'bg-green-500 text-white' : ''
-                            }`}
-                            key={formattedDate}
-                            onClick={() => setCurrentSelectDate(cloneDay)}
-                        >
-                            <span className="text-md font-semibold">{format(day, 'd')}</span>
+                                    isSameDay(day, currentSelectDate) ? 'bg-green-500 text-white' : ''
+                                }`}
+                                key={formattedDate}
+                                onClick={() => setCurrentSelectDate(cloneDay)}
+                            >
+                                <span className="text-md font-semibold">{format(day, 'd')}</span>
+                            </div>
                         </div>
-                        {availableTimesDic[formattedDate] && availableTimesDic[formattedDate].length > 0 && (
-                            <span className="w-2 h-2 bg-primary rounded-full inline-block"/>
-                        )}
                     </div>
                 );
                 day = addDays(day, 1);
