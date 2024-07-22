@@ -10,7 +10,8 @@ import ActivityNew from "./pages/activity/new";
 import Email from "./pages/login/email";
 import ActivityEdit from "./pages/activity/edit";
 import Booking from "./pages/booking";
-import Calendar from "./pages/calendar";
+import Account from "./pages/account";
+import Connect from "./pages/account/connect";
 
 export const router = createBrowserRouter([
     {
@@ -51,10 +52,11 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: '/calendar',
+        path: '/account',
         element: <SideMenu/>,
         children: [
-            {path: '', element: <Calendar/>}
+            {path: '', element: <Account/>},
+            {path: 'connect', element: <Connect/>}
         ]
     },
     {

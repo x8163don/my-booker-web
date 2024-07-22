@@ -87,10 +87,11 @@ export default function Booking() {
     }
 
     return <main className="min-h-screen flex items-center justify-center">
-        {page === 1 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
+        {
+            page === 1 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
             <div className="card-body flex flex-col md:flex-row">
-                <div className="flex-1 w-1/2">
-                    <h2 className="card-title text-white">{bookingDetail.name}</h2>
+                <div className="w-1/3">
+                    <h2 className="card-title text-2xl text-white my-5">{bookingDetail.name}</h2>
                     <div className="flex items-center text-white my-2">
                         <ClockIcon className="h-5 w-5 mr-2"/>{bookingDetail.duration} 分鐘
                     </div>
@@ -105,7 +106,7 @@ export default function Booking() {
                     />
                 </div>
                 <div className="divider divider-horizontal m-0"></div>
-                <div className="flex-1">
+                <div className="flex-1 px-7">
                     <DatePicker
                         timezone={timezone}
                         allowAppointments={bookingDetail.allow_appointments}
@@ -118,7 +119,7 @@ export default function Booking() {
         }
 
         {
-            page === 2 && <div className="card bg-gray-700 shadow-lg rounded-lg h-3/4 w-full lg:w-3/4 xl:w-1/2">
+            page === 2 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
                 <div className="card-body">
                     <span className="link link-primary">
                         <ArrowLeftIcon
@@ -185,7 +186,7 @@ export default function Booking() {
         }
 
         {
-            page === 3 && <div className="card bg-neutral text-neutral-content h-3/4 w-full lg:w-3/4 xl:w-1/2">
+            page === 3 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
                 <div className="card-body items-center text-center">
                     <h2 className="card-title">預約完成</h2>
                     <div className="card-description text-white">

@@ -148,13 +148,16 @@ export default function Schedule() {
                                aria-label={schedule.name}
                                defaultChecked={schedule.id === data[0].id}
                         />
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-4">
-
+                        <div
+                            role="tabpanel"
+                            className="tab-content bg-base-100 border-base-300 rounded-box p-4"
+                        >
                             <div className="flex justify-between my-4">
                                 <div className="flex justify-center items-center gap-2">
                                     <label className="label label-text">Timezone</label>
-                                <TimeZoneSelector currentTimeZone={schedule.time_zone}
-                                                  onTimeZoneChange={(tz) => timeZoneChangeHandler(schedule.id, tz)}/>
+                                    <TimeZoneSelector
+                                        currentTimeZone={schedule.time_zone}
+                                        onTimeZoneChange={(tz) => timeZoneChangeHandler(schedule.id, tz)}/>
                                 </div>
 
                                 <button className="btn btn-error"
@@ -167,7 +170,6 @@ export default function Schedule() {
                             </div>
 
                             <AvailableTimeSelector
-                                key={schedule.id}
                                 availableTimes={schedule?.available_times}
                                 onEventsChange={(availableTimes) => eventsChangeHandler(schedule.id, availableTimes)}
                             />

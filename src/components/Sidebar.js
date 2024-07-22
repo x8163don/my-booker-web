@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 const LINKS = [
     {
@@ -8,6 +8,10 @@ const LINKS = [
     {
         name: '行程',
         href: '/schedule'
+    },
+    {
+        name: '帳戶',
+        href: '/account'
     }
 ]
 export default function Sidebar() {

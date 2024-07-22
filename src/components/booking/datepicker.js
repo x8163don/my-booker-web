@@ -60,7 +60,6 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                 </button>
             </div>
         )
-            ;
     };
 
     const renderDays = () => {
@@ -92,6 +91,7 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                 const cloneDay = day;
                 days.push(
                     <div className="h-12 flex-1 p-1">
+
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 
                             ${isSameDay(day, new Date()) ? 'bg-blue-500 text-white' : ''} ${
@@ -119,14 +119,15 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
         return <div>{rows}</div>;
     };
 
-    return <div className="flex">
+    return <div className="flex flex-col">
         <div className="calendar border rounded-lg h-fit p-4">
             {renderHeader()}
             {renderDays()}
             {renderCells()}
         </div>
 
-        <div className="flex flex-col justify-between ml-4 gap-4">
+        <h2 className="text-2xl my-4">Select Time</h2>
+        <div className="grid grid-cols-3 gap-2">
             {
                 currentSelectDate &&
                 availableTimesDic[format(currentSelectDate, 'yyyy-MM-dd')] &&
@@ -138,7 +139,7 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                                        onTimeSelected(availableTime)
                                    }}
                     >
-                        <span className="group-hover:hidden">{format(availableTime, 'HH:mm')}</span>
+                        <span className="group-hover:hidden">{format(availableTime, 'hh:mm a')}</span>
                         <ArrowRightIcon className="h-5 w-5 hidden group-hover:block"/>
                     </button>
                 })

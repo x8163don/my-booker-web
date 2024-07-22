@@ -328,8 +328,6 @@ export default function ActivityEdit() {
                         <label className="label">
                             <span className="label-text">活動說明</span>
                         </label>
-                        {/*<textarea className="textarea" defaultValue={activity.description}*/}
-                        {/*          onChange={handleOnChangeDescription}/>*/}
                         <ReactQuill theme="snow"
                                     defaultValue={activity.description}
                                     onChange={handleOnChangeDescription}
