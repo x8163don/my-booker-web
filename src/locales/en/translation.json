@@ -55,5 +55,5 @@
   "activity.edit.bookingInterval.before":"Before",
   "activity.edit.bookingInterval.after":"After",
   "activity.edit.bookingLeadTime":"Booking lead time",
-  "activity.edit.startTimeIncrement": "Start time increment",
+  "activity.edit.startTimeIncrement": "Start time increment"
 }
