@@ -9,10 +9,12 @@ import {PlusIcon} from "@heroicons/react/24/outline";
 import {queryClient} from "../../api";
 import {sendToast, TOAST_TYPES} from "../../utils/toast";
 import {me} from "../../api/customer";
+import {useTranslation} from "react-i18next";
 
 export default function Activity() {
 
     const navigate = useNavigate();
+    const {t} = useTranslation()
 
     const {
         data: customer,
@@ -90,7 +92,7 @@ export default function Activity() {
             <button className="btn btn-primary text-white"
                     onClick={() => navigate('/activity/new')}>
                 <PlusIcon className="w-5 h-5"/>
-                New
+                {t('activity.index.new')}
             </button>
         </div>
 

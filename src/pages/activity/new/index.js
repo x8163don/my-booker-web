@@ -6,12 +6,14 @@ import {queryClient} from "../../../api";
 import {createActivity} from "../../../api/activity/activity";
 import {TOAST_TYPES, sendToast} from "../../../utils/toast";
 import {CACHE_KEY} from "../../../utils/constants";
+import {useTranslation} from "react-i18next";
 
 const CUSTOM = 'custom'
 
 export default function ActivityNew() {
 
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
     const {
         register,
@@ -59,34 +61,34 @@ export default function ActivityNew() {
     return createPortal(<div className="modal modal-open" role="dialog">
             <div className="modal-box">
                 <div className="modal-top">
-                    <h3 className="text-2xl font-bold mb-4">Let we know your activity...</h3>
+                    <h3 className="text-2xl font-bold mb-4">{t('activity.new.title')}</h3>
                 </div>
 
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <label className="label">
-                            <span className="label-text">Activity Name</span>
+                            <span className="label-text">{t('activity.new.activityName')}</span>
                         </label>
                         <input type="text"
                                className={"input input-bordered w-full" + (errors.title ? ' input-error' : '')}
-                               placeholder="Title"
+                               placeholder={t('activity.new.activityNamePlaceholder')}
                                {...register("title", {required: true})}
                         />
                     </div>
 
                     <div>
                         <label className="label">
-                            <span className="label-text">Duration</span>
+                            <span className="label-text">{t('activity.new.duration')}</span>
                         </label>
                         <select {...register("duration")}
                                 className="select select-bordered w-full max-w-xs">
-                            <option value={15}>15 min</option>
-                            <option value={30}>30 min</option>
-                            <option value={45}>45 min</option>
-                            <option value={60}>1 hour</option>
-                            <option value={90}>1.5 hour</option>
-                            <option value={120}>2 hour</option>
-                            <option value={CUSTOM}>Others</option>
+                            <option value={15}>15 {t('base.short.minute')}</option>
+                            <option value={30}>30 {t('base.short.minute')}</option>
+                            <option value={45}>45 {t('base.short.minute')}</option>
+                            <option value={60}>1 {t('base.hour')}</option>
+                            <option value={90}>1.5 {t('base.hour')}</option>
+                            <option value={120}>2 {t('base.hour')}</option>
+                            <option value={CUSTOM}>{t('activity.new.custom')}</option>
                         </select>
                     </div>
                     <div className={"flex gap-2" + (duration === CUSTOM ? '' : ' hidden')}>
@@ -94,16 +96,16 @@ export default function ActivityNew() {
                             min: 0,
                             max: 720
                         })}/>
-                        <label className="label"> <span className="label-text">Minutes</span> </label>
+                        <label className="label"> <span className="label-text">{t('base.minutes')}</span> </label>
                     </div>
 
                     <div className="modal-action">
-                        <button className="btn btn-outline" onClick={handleClose}>Cancel</button>
+                        <button className="btn btn-outline" onClick={handleClose}>{t('base.cancel')}</button>
                         <button
                             type="submit"
                             className="btn btn-primary"
                             disabled={isPendingCreateActivity}
-                        >{isPendingCreateActivity ? <span className="loading loading-spinner"></span> : 'New'}</button>
+                        >{isPendingCreateActivity ? <span className="loading loading-spinner"></span> : t('base.new')}</button>
                     </div>
                 </form>
             </div>

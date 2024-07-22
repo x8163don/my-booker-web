@@ -10,10 +10,12 @@ import {queryClient} from "../../api";
 import {useNavigate} from "react-router-dom";
 import {QuestionMarkCircleIcon} from "@heroicons/react/16/solid";
 import {PlusIcon} from "@heroicons/react/24/outline";
+import {useTranslation} from "react-i18next";
 
 export default function Account() {
 
     const navigate = useNavigate();
+    const {t} = useTranslation()
 
     const [calendarItems, setCalendarItems] = useState([]);
     const [targetCalendarItem, setTargetCalendarItem] = useState(null);
@@ -81,7 +83,6 @@ export default function Account() {
     }
 
 
-
     const handleSave = () => {
         changeTargetCalendarMutate({
             sourceID: targetCalendarItem.calendar_source_id,
@@ -96,12 +97,13 @@ export default function Account() {
 
         <div className="card">
             <div className="card-body">
-                <h2 className="card-title">外部服務</h2>
+                <h2 className="card-title">{t('account.index.thirdParty.title')}</h2>
                 <div className="form-control">
                     <label className="label items-center">
                         <div className="label-text flex items-center gap-2">
-                            <span>同步到:</span>
-                            <span className="label-text-alt tooltip tooltip-top" data-tip="test">
+                            <span>{t('account.index.thirdParty.syncTo')}</span>
+                            <span className="label-text-alt tooltip tooltip-top"
+                                  data-tip={t('account.index.thirdParty.syncTo.tooltips')}>
                         <QuestionMarkCircleIcon className="w-4 h-4"/>
                     </span>
                         </div>
@@ -110,7 +112,7 @@ export default function Account() {
                         <select className="select select-bordered w-full max-w-md"
                                 value={targetCalendarItem ? targetCalendarItem.id : ""}
                                 onChange={(e) => setTargetCalendarItem(calendarItems.find(item => item.id === e.target.value))}>
-                            <option disabled value="">Select Calendar</option>
+                            <option disabled value="">{t('account.index.selectCalendarDefault')}</option>
                             {calendarItems.map((item) => {
                                 return <option key={item.id} value={item.id}>
                                     {item.calendar_source_email} - {item.title}
@@ -122,7 +124,7 @@ export default function Account() {
                             className="btn btn-primary"
                             onClick={handleSave}
                             disabled={!!targetCalendarItem && targetCalendarItem?.is_target}
-                        >保存
+                        > {t('base.save')}
                         </button>
                     </div>
                 </div>
@@ -131,7 +133,7 @@ export default function Account() {
                         className="btn btn-primary text-md text-white"
                         onClick={() => navigate("/account/connect")}>
                         <PlusIcon className="h-5 w-5"></PlusIcon>
-                        連結外部服務
+                        {t('account.index.thirdParty.connectTo')}
                     </button>
                 </div>
             </div>

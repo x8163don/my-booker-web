@@ -1,0 +1,14 @@
+{
+  "base.save": "",
+  "base.cancel": "",
+  "base.delete": "",
+  "base.delete.confirm": "",
+  "base.delete.success": "",
+
+  "account.title": "",
+  "account.profile.title": "",
+  "account.thirdparty.title": "",
+  "account.thirdparty.syncto": "",
+  "account.thirdparty.syncto.tooltips": "",
+  "account.thirdparty.connect.to": ""
+}

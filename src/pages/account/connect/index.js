@@ -3,9 +3,11 @@ import {FcGoogle} from "react-icons/fc";
 import {handleGoogleOAuth} from "../../../api/calendar";
 import {sendToast, TOAST_TYPES} from "../../../utils/toast";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export default function Connect() {
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
     const handelGoogleConnect = async () => {
         try {
@@ -28,7 +30,7 @@ export default function Connect() {
                             onClick={handelGoogleConnect}
                     >
                         <FcGoogle className="w-5 h-5"></FcGoogle>
-                        <span>連結到 Google 行事曆</span>
+                        <span>{t('account.connect.google')}</span>
                     </button>
                 </div>
             </div>

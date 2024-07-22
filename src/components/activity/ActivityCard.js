@@ -4,11 +4,13 @@ import {createPortal} from "react-dom";
 import Clipboard from 'clipboard';
 import "react-toastify/dist/ReactToastify.css";
 import {sendToast, TOAST_TYPES} from "../../utils/toast";
+import {useTranslation} from "react-i18next";
 
 
 export default function ActivityCard({customer, activity, onEdit, onDelete, onToggle}) {
 
     const copyRef = useRef(null);
+    const {t} = useTranslation()
     const [showDeleteConfirmModel, setShowDeleteConfirmModel] = useState(false)
 
     useEffect(() => {
@@ -37,12 +39,12 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                         className="btn btn-outline mr-2"
                         onClick={() => setShowDeleteConfirmModel(false)}
                     >
-                        Cancel
+                        {t('base.cancel')}
                     </button>
                     <button
                         className="btn btn-primary"
                         onClick={onConfirm}
-                    > Confirm
+                    >{t('base.confirm')}
                     </button>
                 </div>
             </div>
@@ -63,18 +65,18 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                             <li onClick={() => onEdit(activity.id)}>
                                 <label className="label cursor-pointer">
                                     <span className="label-text"> <PencilIcon
-                                        className="inline h-4 w-4 mr-2"/>Edit</span>
+                                        className="inline h-4 w-4 mr-2"/>{t('base.edit')}</span>
                                 </label>
                             </li>
                             <li onClick={() => setShowDeleteConfirmModel(true)}>
                                 <label className="label cursor-pointer">
                                     <span className="label-text"> <TrashIcon
-                                        className="inline h-4 w-4 mr-2"/>Delete</span>
+                                        className="inline h-4 w-4 mr-2"/>{t('base.delete')}</span>
                                 </label>
                             </li>
                             <div className="divider my-0"></div>
                             <li><label className="label cursor-pointer">
-                                <span className="label-text">On/Off</span>
+                                <span className="label-text">{t('activity.activitycard.onoff')}</span>
                                 <input type="checkbox" className="toggle toggle-primary"
                                        defaultChecked={activity.is_open}
                                        onChange={(e) => onToggle(activity.id, e.target.checked)}
@@ -89,8 +91,9 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                         {activity.duration},{activity.activity_type}
                     </div>
                     <a className="link link-primary"
-                       href={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}>View
-                        Booking Page</a>
+                       href={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}>
+                        {t('activity.activitycard.viewbookingpage')}
+                    </a>
                 </div>
                 <div className="divider my-0"></div>
                 <div className="card-actions justify-between">
@@ -99,7 +102,7 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                         data-clipboard-text={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}
                         className="btn btn-primary text-white">
                         <DocumentDuplicateIcon className="h-5 w-5"/>
-                        Copy link
+                        {t('activity.activitycard.copylink')}
                     </button>
                 </div>
             </div>

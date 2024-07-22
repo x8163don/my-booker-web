@@ -18,11 +18,13 @@ import {useState} from "react";
 import {listSchedules} from "../../../api/schedule/schedule";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
+import {useTranslation} from "react-i18next";
 
 
 export default function ActivityEdit() {
     const params = useParams()
     const navigate = useNavigate()
+    const {t} = useTranslation()
 
     const {
         data: activity,
@@ -290,14 +292,14 @@ export default function ActivityEdit() {
         <div className="min-h-screen bg-base-200 flex items-center justify-center">
             <div className="card-body">
                 <div className="card-title">
-                    <button className="btn btn-link text-lg" onClick={handleBack}><ArrowLeftIcon className="w-5 h-5"/>Back
+                    <button className="btn btn-link text-lg" onClick={handleBack}><ArrowLeftIcon className="w-5 h-5"/>{t('base.back')}
                     </button>
                 </div>
 
                 <form className="card-body">
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">開放預約</span>
+                            <span className="label-text">{t('activity.edit.isOpen')}</span>
                         </label>
                         <input type="checkbox" className="toggle toggle-primary" defaultChecked={activity.is_open}
                                onChange={handleSwitch}/>
@@ -305,28 +307,28 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">活動名稱</span>
+                            <span className="label-text">{t('activity.edit.activityName')}</span>
                         </label>
                         <input className="input input-bordered" defaultValue={activity.name} disabled/>
                     </div>
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">類型</span>
+                            <span className="label-text">{t('activity.edit.activityType')}</span>
                         </label>
                         <input className="input input-bordered" defaultValue={activity.activity_type} disabled/>
                     </div>
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">時間</span>
+                            <span className="label-text">{t('activity.edit.duration')}</span>
                         </label>
                         <input className="input input-bordered" defaultValue={activity.duration} disabled/>
                     </div>
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">活動說明</span>
+                            <span className="label-text">{t('activity.edit.description')}</span>
                         </label>
                         <ReactQuill theme="snow"
                                     defaultValue={activity.description}
@@ -336,7 +338,7 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">地點</span>
+                            <span className="label-text">{t('activity.edit.location')}</span>
                         </label>
 
                         <div className="join">
@@ -344,8 +346,8 @@ export default function ActivityEdit() {
                                 className="join-item btn"
                                 type="radio"
                                 name="location"
-                                value="電話"
-                                aria-label="電話"
+                                value={t('activity.edit.location.phoneNumber')}
+                                aria-label={t('activity.edit.location.phoneNumber')}
                                 checked={activity.location_type === 'CellPhone'}
                                 onChange={() => handleLocationChange('CellPhone')}
                             />
@@ -353,8 +355,8 @@ export default function ActivityEdit() {
                                 className="join-item btn"
                                 type="radio"
                                 name="location"
-                                value="實體位置"
-                                aria-label="實體位置"
+                                value={t('activity.edit.location.address')}
+                                aria-label={t('activity.edit.location.address')}
                                 checked={activity.location_type === 'InPersonMeeting'}
                                 onChange={() => handleLocationChange('InPersonMeeting')}
                             />
@@ -362,8 +364,8 @@ export default function ActivityEdit() {
                                 className="join-item btn"
                                 type="radio"
                                 name="location"
-                                value="Google Meet"
-                                aria-label="Google Meet"
+                                value={t('activity.edit.location.googleMeet')}
+                                aria-label={t('activity.edit.location.googleMeet')}
                                 checked={activity.location_type === 'GoogleMeet'}
                                 onChange={() => handleLocationChange('GoogleMeet')}
                             />
@@ -371,13 +373,13 @@ export default function ActivityEdit() {
                         {/*TODO*/}
                         {activity.location_type === "InPersonMeeting" &&
                             <div className="mt-4">
-                                <input type="text" placeholder="地址" defaultValue={activity.location_detail}/>
+                                <input type="text" placeholder={t('activity.edit.location.address')} defaultValue={activity.location_detail}/>
                             </div>}
                     </div>
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">開放日期</span>
+                            <span className="label-text">{t('activity.edit.allowBookingInDays')} </span>
                         </label>
                         {
                             activity.date_range_type === 'InDays' &&
@@ -394,7 +396,7 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">開放時間</span>
+                            <span className="label-text">{t('activity.edit.availableTimes')}</span>
                         </label>
                         <select className="select select-bordered"
                                 defaultValue={activity.availability_id}
@@ -410,18 +412,18 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">預約間隔</span>
+                            <span className="label-text">{t('activity.edit.bookingInterval')}</span>
                         </label>
 
                         <label className="label cursor-pointer">
-                            <span className="label-text">前</span>
+                            <span className="label-text">{t('activity.edit.bookingInterval.before')}</span>
                         </label>
                         <input className="input" type="number" defaultValue={activity.buffer_before}
-                               min='0'
+                               min={0}
                                onChange={(e) => handleBufferChange(e.target.value, activity.after)}
                         />
                         <label className="label cursor-pointer">
-                            <span className="label-text">後</span>
+                            <span className="label-text">{t('activity.edit.bookingInterval.after')}</span>
                         </label>
                         <input className="input" type="number" defaultValue={activity.buffer_after}
                                min={0}
@@ -431,7 +433,7 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">最短可預約時間</span>
+                            <span className="label-text">{t('activity.edit.bookingLeadTime')}</span>
                         </label>
                         <input className="input" type="number" defaultValue={activity.minimum_schedule_before}
                                min={0}
@@ -441,14 +443,14 @@ export default function ActivityEdit() {
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
-                            <span className="label-text">開始時間增量</span>
+                            <span className="label-text">{t('activity.edit.startTimeIncrement')}</span>
                         </label>
                         <select className="select select-bordered" defaultValue={activity.start_time_increment}
                                 onChange={handleStartTimeIncrementChange}>
-                            <option value={15}>15</option>
-                            <option value={30}>30</option>
-                            <option value={45}>45</option>
-                            <option value={60}>60</option>
+                            <option value={15}>15 {t('base.short.minute')}</option>
+                            <option value={30}>30 {t('base.short.minute')}</option>
+                            <option value={45}>45 {t('base.short.minute')}</option>
+                            <option value={60}>60 {t('base.short.minute')}</option>
                         </select>
                     </div>
                 </form>
