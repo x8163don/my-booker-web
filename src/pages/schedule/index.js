@@ -15,9 +15,11 @@ import AvailableTimeSelector from "../../components/schedule/AvailableTimeSelect
 import {TrashIcon} from "@heroicons/react/24/solid";
 import TimeZoneSelector from "../../components/TimeZoneSelector";
 import {CACHE_KEY, MINUTE} from "../../utils/constants";
+import {useTranslation} from "react-i18next";
 
 export default function Schedule() {
 
+    const {t} = useTranslation();
     const nameInputRef = useRef();
     const [isNameInputError, setIsNameInputError] = useState(false);
     const [updatedSchedules, setUpdatedSchedules] = useState({})
@@ -134,7 +136,7 @@ export default function Schedule() {
                 onClick={newScheduleHandler}
                 disabled={isPendingCreateSchedule}
         >
-            {isPendingCreateSchedule ? <span className="loading loading-spinner text-primary"/> : "New"}
+            {isPendingCreateSchedule ? <span className="loading loading-spinner text-primary"/> : t("base.new")}
         </button>
 
         <div role="tablist" className="tabs tabs-bordered tabs-lg mt-8">
@@ -154,7 +156,7 @@ export default function Schedule() {
                         >
                             <div className="flex justify-between my-4">
                                 <div className="flex justify-center items-center gap-2">
-                                    <label className="label label-text">Timezone</label>
+                                    <label className="label label-text">{t("base.timezone")}</label>
                                     <TimeZoneSelector
                                         currentTimeZone={schedule.time_zone}
                                         onTimeZoneChange={(tz) => timeZoneChangeHandler(schedule.id, tz)}/>
@@ -180,7 +182,7 @@ export default function Schedule() {
                                         onClick={() => saveHandler(schedule.id)}
                                         disabled={isPendingSetAvailableTime || isPendingSetTimeZone}>
                                     {isPendingSetAvailableTime || isPendingSetTimeZone ?
-                                        <span className="loading loading-spinner text-primary"/> : "Save"}
+                                        <span className="loading loading-spinner text-primary"/> : t("base.save")}
                                 </button>
                             </div>
                         </div>

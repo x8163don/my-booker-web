@@ -12,6 +12,9 @@ import ActivityEdit from "./pages/activity/edit";
 import Booking from "./pages/booking";
 import Account from "./pages/account";
 import Connect from "./pages/account/connect";
+import Appointment from "./pages/appointment";
+import Cancel from "./pages/appointment/cancel";
+import {checkAuthTokenLoader} from "./utils/auth";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +34,27 @@ export const router = createBrowserRouter([
         ]
     },
     {
+        path: '/booking/:url_name/:booking_key',
+        element: <Booking/>,
+    },
+    {
+        path: '/appointment',
+        element: <SingleColumn/>,
+        children: [
+            {path: 'cancel', element: <Cancel/>},
+        ]
+    },
+    {
+        path: '/appointment',
+        loader: checkAuthTokenLoader,
+        element: <SideMenu/>,
+        children: [
+            {path: '', element: <Appointment/>},
+        ]
+    },
+    {
         path: '/activity',
+        loader: checkAuthTokenLoader,
         element: <SideMenu/>,
         children: [
             {path: '', element: <Activity/>},
@@ -39,6 +62,7 @@ export const router = createBrowserRouter([
         ]
     }, {
         path: '/activity/:id/edit',
+        loader: checkAuthTokenLoader,
         element: <SingleColumn/>,
         children: [
             {path: '', element: <ActivityEdit/>},
@@ -46,6 +70,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/schedule',
+        loader: checkAuthTokenLoader,
         element: <SideMenu/>,
         children: [
             {path: '', element: <Schedule/>}
@@ -53,14 +78,12 @@ export const router = createBrowserRouter([
     },
     {
         path: '/account',
+        loader: checkAuthTokenLoader,
         element: <SideMenu/>,
         children: [
             {path: '', element: <Account/>},
             {path: 'connect', element: <Connect/>}
         ]
     },
-    {
-        path: '/booking/:url_name/:booking_key',
-        element: <Booking/>,
-    }
+
 ])

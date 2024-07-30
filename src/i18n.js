@@ -14,9 +14,11 @@ const resources = {
     }
 }
 
+const savedLanguage = localStorage.getItem('language') || 'en';
+
 i18n.use(Backend).use(LanguageDetector).use(initReactI18next).init({
     resources,
-    lng: 'en',
+    lng: savedLanguage,
     fallbackLng: 'en',
     interpolation: {
         escapeValue: false

@@ -15,10 +15,12 @@ import {
     isSameDay,
 } from 'date-fns';
 import {ArrowLeftIcon, ArrowRightIcon,} from "@heroicons/react/24/outline";
+import {useTranslation} from "react-i18next";
 
 
 export default function DatePicker({timezone, allowAppointments, onTimeSelected, onTimeZoneChange}) {
 
+    const {t} = useTranslation()
     const [availableTimesDic, setAvailableTimesDic] = useState({})
     const [currentSelectDate, setCurrentSelectDate] = useState(null)
     const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -64,13 +66,13 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
 
     const renderDays = () => {
         return <div className="flex gap-2">
-            <div className="flex-1 text-center">一</div>
-            <div className="flex-1 text-center">二</div>
-            <div className="flex-1 text-center">三</div>
-            <div className="flex-1 text-center">四</div>
-            <div className="flex-1 text-center">五</div>
-            <div className="flex-1 text-center">六</div>
-            <div className="flex-1 text-center">日</div>
+            <div className="flex-1 text-center">{t("base.week.monday")}</div>
+            <div className="flex-1 text-center">{t("base.week.tuesday")}</div>
+            <div className="flex-1 text-center">{t("base.week.wednesday")}</div>
+            <div className="flex-1 text-center">{t("base.week.thursday")}</div>
+            <div className="flex-1 text-center">{t("base.week.friday")}</div>
+            <div className="flex-1 text-center">{t("base.week.saturday")}</div>
+            <div className="flex-1 text-center">{t("base.week.sunday")}</div>
         </div>;
     };
 

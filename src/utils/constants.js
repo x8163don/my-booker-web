@@ -12,4 +12,6 @@ export const CACHE_KEY = {
     BOOKING: 'booking',
     CALENDAR: 'calendar',
     CALENDARS: 'calendars',
+    APPOINTMENT: 'appointment',
+    APPOINTMENTS: 'appointments',
 }

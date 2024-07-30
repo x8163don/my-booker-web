@@ -11,14 +11,28 @@ import {useNavigate} from "react-router-dom";
 import {QuestionMarkCircleIcon} from "@heroicons/react/16/solid";
 import {PlusIcon} from "@heroicons/react/24/outline";
 import {useTranslation} from "react-i18next";
+import {me, setLanguage, setTimeZone} from "../../api/customer";
+import TimeZoneSelector from "../../components/TimeZoneSelector";
 
 export default function Account() {
 
     const navigate = useNavigate();
-    const {t} = useTranslation()
+    const {t, i18n} = useTranslation()
 
     const [calendarItems, setCalendarItems] = useState([]);
     const [targetCalendarItem, setTargetCalendarItem] = useState(null);
+
+
+    const {
+        data: customer,
+        isPending: isPendingAccounts,
+        isError: isErrorAccounts
+    } = useQuery({
+        queryKey: [CACHE_KEY.ACCOUNT],
+        queryFn: (signal) => me({signal: signal}),
+        cacheTime: 1 * DAY,
+        staleTime: 1 * DAY,
+    })
 
     const {
         data: calendarSources,
@@ -39,8 +53,34 @@ export default function Account() {
     } = useMutation({
         mutationFn: changeTargetCalendar,
         onSuccess: (data) => {
-            sendToast(TOAST_TYPES.SUCCESS, "saved")
+            sendToast(TOAST_TYPES.SUCCESS, t('base.save.success'))
             queryClient.invalidateQueries({queryKey: [CACHE_KEY.CALENDARS]})
+        },
+        onError: (error) => {
+            sendToast(TOAST_TYPES.ERROR, error.message)
+        },
+    })
+
+    const {
+        mutate: setLanguageMutate
+    } = useMutation({
+        mutationFn: setLanguage,
+        onSuccess: (data) => {
+            sendToast(TOAST_TYPES.SUCCESS, t('base.save.success'))
+            queryClient.invalidateQueries({queryKey: [CACHE_KEY.ACCOUNT]})
+        },
+        onError: (error) => {
+            sendToast(TOAST_TYPES.ERROR, error.message)
+        },
+    })
+
+    const {
+        mutate: setTimeZoneMutate
+    } = useMutation({
+        mutationFn: setTimeZone,
+        onSuccess: (data) => {
+            sendToast(TOAST_TYPES.SUCCESS, t('base.save.success'))
+            queryClient.invalidateQueries({queryKey: [CACHE_KEY.ACCOUNT]})
         },
         onError: (error) => {
             sendToast(TOAST_TYPES.ERROR, error.message)
@@ -75,10 +115,10 @@ export default function Account() {
         setCalendarItems(result)
     }, [calendarSources]);
 
-    if (isLoading) {
+    if (isPendingAccounts || isLoading) {
         return <Loading/>
     }
-    if (isError) {
+    if (isErrorAccounts || isError) {
         return <Error/>
     }
 
@@ -90,10 +130,44 @@ export default function Account() {
         })
     };
 
-    return <div>
-        {/*<h1>帳戶</h1>*/}
+    const handleChangeLanguage = (e) => {
+        setLanguageMutate({language: e.target.value})
+        i18n.changeLanguage(e.target.value);
+        localStorage.setItem('language', e.target.value);
+    };
 
-        {/*<h2>個人資料</h2>*/}
+    const handleChangeTimeZone = (tz) => {
+        setTimeZoneMutate({timezone: tz})
+    };
+
+    return <div>
+        <div className="card">
+            <div className="card-body">
+                <h2 className="card-title">{t('account.index.preferences.title')}</h2>
+                <div className="form-control">
+                    <label className="label">
+                        <span className="label-text">{t('account.index.preferences.language')}</span>
+                    </label>
+
+                    <select className="select select-bordered w-full max-w-md" defaultValue={customer.language}
+                            onChange={handleChangeLanguage}>
+                        <option value="en">English</option>
+                        <option value="zh-tw">繁體中文</option>
+                    </select>
+                </div>
+
+                <div className="form-control">
+                    <label className="label">
+                        <span className="label-text">{t('account.index.preferences.timezone')}</span>
+                    </label>
+
+                    <TimeZoneSelector
+                        currentTimeZone={customer.time_zone}
+                        onTimeZoneChange={(tz) => handleChangeTimeZone(tz.value)}/>
+                </div>
+            </div>
+        </div>
+
 
         <div className="card">
             <div className="card-body">
@@ -104,8 +178,8 @@ export default function Account() {
                             <span>{t('account.index.thirdParty.syncTo')}</span>
                             <span className="label-text-alt tooltip tooltip-top"
                                   data-tip={t('account.index.thirdParty.syncTo.tooltips')}>
-                        <QuestionMarkCircleIcon className="w-4 h-4"/>
-                    </span>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
                         </div>
                     </label>
                     <div className="flex items-center gap-2">

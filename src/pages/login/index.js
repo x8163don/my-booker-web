@@ -5,10 +5,12 @@ import {login} from "../../api/auth/auth";
 import {useNavigate} from "react-router-dom";
 import {TOAST_TYPES, sendToast} from "../../utils/toast";
 import {ToastContainer} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
 export default function Login() {
 
     const navigate = useNavigate()
+    const {t} = useTranslation()
 
     const {
         register,
@@ -58,7 +60,7 @@ export default function Login() {
                         disabled={isPending}
                     >
                         {
-                            isPending ? <span className="loading loading-spinner text-white"/> : '下一步'
+                            isPending ? <span className="loading loading-spinner text-white"/> : t('login.index.continue')
                         }
                     </button>
                 </form>

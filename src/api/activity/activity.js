@@ -104,7 +104,7 @@ export const setDescription = async ({id, description, signal}) => {
     return data
 }
 
-export const setLocation = async ({id, location, signal}) => {
+export const setLocation = async ({id, locationType,locationDetail, signal}) => {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/activity/set-location`, {
         method: 'PUT',
         headers: {
@@ -113,7 +113,8 @@ export const setLocation = async ({id, location, signal}) => {
         },
         body: JSON.stringify({
             activity_id: id,
-            location
+            location_type: locationType,
+            location_detail: locationDetail
         }),
         AbortSignal: signal
     })

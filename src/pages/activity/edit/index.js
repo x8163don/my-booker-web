@@ -3,7 +3,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {
     getActivity, setAvailability, setBuffer,
     setDateRange,
-    setDescription, setMinimumScheduleBefore,
+    setDescription, setLocation, setMinimumScheduleBefore,
     setStartTimeIncrement,
     switchActivity
 } from "../../../api/activity/activity";
@@ -14,17 +14,20 @@ import {sendToast, TOAST_TYPES} from "../../../utils/toast";
 import {queryClient} from "../../../api";
 import sanitizeHtml from "sanitize-html";
 import {CACHE_KEY, MINUTE} from "../../../utils/constants";
-import {useState} from "react";
+import React, {useState} from "react";
 import {listSchedules} from "../../../api/schedule/schedule";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import {useTranslation} from "react-i18next";
+import {PencilSquareIcon, QuestionMarkCircleIcon, PhoneIcon, UserIcon} from "@heroicons/react/16/solid";
 
 
 export default function ActivityEdit() {
     const params = useParams()
     const navigate = useNavigate()
     const {t} = useTranslation()
+
+    const [showLocationChangeModel, setShowLocationChangeModel] = useState(false)
 
     const {
         data: activity,
@@ -55,7 +58,7 @@ export default function ActivityEdit() {
         mutationFn: switchActivity,
         onMutate: async ({id, isOpen}) => {
             await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
-            const previousActivity = queryClient.getQueryData(['activity', id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({...old, is_open: isOpen,}));
             return {previousActivity};
         },
@@ -76,7 +79,7 @@ export default function ActivityEdit() {
         mutationFn: setDescription,
         onMutate: async ({id, description}) => {
             await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
-            const previousActivity = queryClient.getQueryData(['activity', id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({...old, description: description}));
             return {previousActivity};
         },
@@ -88,13 +91,45 @@ export default function ActivityEdit() {
             sendToast(TOAST_TYPES.ERROR, error.message)
         },
     })
+
+    const {
+        mutate: setLocationMutate,
+        isPending: isLocationPending
+
+    } = useMutation({
+        mutationFn: setLocation,
+        onMutate: async ({id, locationType, locationDetail}) => {
+            await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
+            queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({
+                ...old,
+                location_type: locationType,
+                location_detail: locationDetail
+            }));
+            return {previousActivity};
+        },
+        onSuccess: (data, {id, locationType, locationDetail}) => {
+            console.log("success", locationType, locationDetail)
+            queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({
+                ...old,
+                location_type: locationType,
+                location_detail: locationDetail
+            }));
+            setShowLocationChangeModel(false)
+        },
+        onError: (error, {id, location}, context) => {
+            queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], context.previousActivity);
+            sendToast(TOAST_TYPES.ERROR, error.message)
+        },
+    })
+
     const {
         mutate: setDateRangeMutate,
     } = useMutation({
         mutationFn: setDateRange,
         onMutate: async ({id, dateRangeType, dateRangeDetail}) => {
             await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
-            const previousActivity = queryClient.getQueryData(['activity', id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({
                 ...old,
                 date_range_type: dateRangeType,
@@ -148,7 +183,7 @@ export default function ActivityEdit() {
         mutationFn: setBuffer,
         onMutate: async ({id, before, after}) => {
             await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
-            const previousActivity = queryClient.getQueryData(['activity', id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({
                 ...old,
                 before: before,
@@ -200,7 +235,7 @@ export default function ActivityEdit() {
         mutationFn: setStartTimeIncrement,
         onMutate: async ({id, startTimeIncrement}) => {
             await queryClient.cancelQueries([CACHE_KEY.ACTIVITY, id]);
-            const previousActivity = queryClient.getQueryData(['activity', id]);
+            const previousActivity = queryClient.getQueryData([CACHE_KEY.ACTIVITY, id]);
             queryClient.setQueryData([CACHE_KEY.ACTIVITY, id], old => ({
                 ...old,
                 startTimeIncrement: startTimeIncrement
@@ -249,13 +284,15 @@ export default function ActivityEdit() {
         setDescriptionMutateTimeoutId(newTimeoutId);
     }
 
-    const handleLocationChange = (type) => {
-        // TODO
+    const handleLocationChange = (type, detail) => {
         if (activity.location_type === type) {
             return
         }
-
-        queryClient.setQueryData([CACHE_KEY.ACTIVITY, activity.id], old => ({...old, location_type: type,}));
+        setLocationMutate({
+            id: activity.id,
+            locationType: type,
+            locationDetail: detail
+        })
     }
 
     const handleDateRangeChange = (type, detail) => {
@@ -287,20 +324,85 @@ export default function ActivityEdit() {
         setStartTimeIncrementMutate({id: activity.id, startTimeIncrement: increment})
     }
 
+    const LocationChangeModal = ({onConfirm}) => {
+        const [locationType, setLocationType] = useState(activity.location_type)
+        const [locationDetail, setLocationDetail] = useState(activity.location_detail)
 
-    return <main className="min-h-screen  p-16">
+        return <div className="modal modal-open">
+            <div className="modal-box">
+                <h2 className="text-xl mb-4">{t('activity.edit.locationChangeModal.title')}</h2>
+
+                <div className="form-control">
+                    <label className="label cursor-pointer">
+                        <span className="label-text flex">
+                            <PhoneIcon className="w-5 h-5 mr-2"/>
+                            {t('activity.edit.location.CellPhone')}
+                        </span>
+                        <input type="radio" name="locationType" className="radio radio-info"
+                               defaultChecked={locationType === 'CellPhone'}
+                               onChange={() => setLocationType('CellPhone')}
+                        />
+                    </label>
+                </div>
+                <div className="form-control">
+                    <label className="label cursor-pointer">
+                      <span className="label-text flex">
+                            <UserIcon className="w-5 h-5 mr-2"/>
+                          {t('activity.edit.location.InPersonMeeting')}
+                        </span>
+                        <input type="radio" name="locationType" className="radio radio-info"
+                               defaultChecked={locationType === 'InPersonMeeting'}
+                               onChange={() => setLocationType('InPersonMeeting')}
+                        />
+                    </label>
+                    {locationType === 'InPersonMeeting' &&
+                        <input type="text" className="input input-bordered"
+                               placeholder={t('activity.edit.location.locationChangeModal.InPersonMeetingPlaceholder')}
+                               defaultValue={locationDetail}
+                               onChange={(e) => setLocationDetail(e.target.value)}/>
+                    }
+                </div>
+
+                <div className="modal-action mt-4 flex justify-end">
+                    <button
+                        className="btn btn-outline mr-2"
+                        onClick={() => setShowLocationChangeModel(false)}
+                    >
+                        {t('base.cancel')}
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => onConfirm(locationType, locationDetail)}
+                        disabled={isLocationPending}
+                    >
+                        {isLocationPending ? <Loading/> : t('base.save')}
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+    return <main className="min-h-screen p-16">
         <div className="min-h-screen bg-base-200 flex items-center justify-center">
-            <div className="card-body">
+            <div className="card-body max-w-7xl">
                 <div className="card-title">
-                    <button className="btn btn-link text-lg" onClick={handleBack}><ArrowLeftIcon className="w-5 h-5"/>{t('base.back')}
+                    <button className="btn btn-link text-lg" onClick={handleBack}><ArrowLeftIcon
+                        className="w-5 h-5"/>{t('base.back')}
                     </button>
                 </div>
 
                 <form className="card-body">
                     <div className="form-control">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.isOpen')}</span>
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.isOpen')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.isOpen.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                                </span>
+                            </div>
                         </label>
+
                         <input type="checkbox" className="toggle toggle-primary" defaultChecked={activity.is_open}
                                onChange={handleSwitch}/>
                     </div>
@@ -316,87 +418,103 @@ export default function ActivityEdit() {
                         <label className="label cursor-pointer">
                             <span className="label-text">{t('activity.edit.activityType')}</span>
                         </label>
-                        <input className="input input-bordered" defaultValue={activity.activity_type} disabled/>
+                        <input className="input input-bordered"
+                               defaultValue={t('activity.activityCard.type.' + activity.activity_type)} disabled/>
                     </div>
 
                     <div className="form-control">
                         <label className="label cursor-pointer">
                             <span className="label-text">{t('activity.edit.duration')}</span>
                         </label>
-                        <input className="input input-bordered" defaultValue={activity.duration} disabled/>
+                        <input className="input input-bordered"
+                               defaultValue={activity.duration + " " + t('base.short.minute')} disabled/>
                     </div>
 
                     <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">{t('activity.edit.description')}</span>
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.description')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.description.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
-                        <ReactQuill theme="snow"
-                                    defaultValue={activity.description}
-                                    onChange={handleOnChangeDescription}
+
+                        <ReactQuill
+                            theme="snow"
+                            defaultValue={activity.description}
+                            onChange={handleOnChangeDescription}
                         />
                     </div>
 
                     <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">{t('activity.edit.location')}</span>
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.location')} </span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.location.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
 
-                        <div className="join">
-                            <input
-                                className="join-item btn"
-                                type="radio"
-                                name="location"
-                                value={t('activity.edit.location.phoneNumber')}
-                                aria-label={t('activity.edit.location.phoneNumber')}
-                                checked={activity.location_type === 'CellPhone'}
-                                onChange={() => handleLocationChange('CellPhone')}
-                            />
-                            <input
-                                className="join-item btn"
-                                type="radio"
-                                name="location"
-                                value={t('activity.edit.location.address')}
-                                aria-label={t('activity.edit.location.address')}
-                                checked={activity.location_type === 'InPersonMeeting'}
-                                onChange={() => handleLocationChange('InPersonMeeting')}
-                            />
-                            <input
-                                className="join-item btn"
-                                type="radio"
-                                name="location"
-                                value={t('activity.edit.location.googleMeet')}
-                                aria-label={t('activity.edit.location.googleMeet')}
-                                checked={activity.location_type === 'GoogleMeet'}
-                                onChange={() => handleLocationChange('GoogleMeet')}
-                            />
+                        <div className="flex items-center">
+                            <input className="input input-bordered"
+                                   value={t('activity.edit.location.' + activity.location_type)} disabled/>
+                            <button className="btn btn-ghost"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        setShowLocationChangeModel(true)
+
+                                    }}>
+                                <PencilSquareIcon className="w-6 h-6"/>
+                            </button>
                         </div>
-                        {/*TODO*/}
                         {activity.location_type === "InPersonMeeting" &&
                             <div className="mt-4">
-                                <input type="text" placeholder={t('activity.edit.location.address')} defaultValue={activity.location_detail}/>
+                                <input
+                                    className="input input-bordered"
+                                    type="text" placeholder={t('activity.edit.location.address')}
+                                    defaultValue={activity.location_detail}/>
                             </div>}
+
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">{t('activity.edit.allowBookingInDays')} </span>
+                    <div className="form-control max-w-lg">
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.allowBookingInDays')} </span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.allowBookingInDays.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
+
                         {
                             activity.date_range_type === 'InDays' &&
-                            <div>
+                            <div className="flex items-center">
                                 <input
                                     className="input"
                                     value={+activity.date_range_detail}
                                     type="number"
                                     onChange={(e) => handleDateRangeChange('InDays', e.target.value)}
                                 />
+                                <div>{t('base.days')}</div>
                             </div>
                         }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.availableTimes')}</span>
+                    <div className="form-control max-w-lg">
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.availableTimes')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.availableTimes.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
                         <select className="select select-bordered"
                                 defaultValue={activity.availability_id}
@@ -410,41 +528,73 @@ export default function ActivityEdit() {
                         </select>
                     </div>
 
-                    <div className="form-control">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.bookingInterval')}</span>
+                    <div className="form-control max-w-sm">
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.bookingInterval')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.bookingInterval.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
 
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.bookingInterval.before')}</span>
-                        </label>
-                        <input className="input" type="number" defaultValue={activity.buffer_before}
-                               min={0}
-                               onChange={(e) => handleBufferChange(e.target.value, activity.after)}
-                        />
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.bookingInterval.after')}</span>
-                        </label>
-                        <input className="input" type="number" defaultValue={activity.buffer_after}
-                               min={0}
-                               onChange={(e) => handleBufferChange(activity.before, e.target.value)}
-                        />
+                        <div>
+                            <label className="label cursor-pointer">
+                                <span className="label-text">{t('activity.edit.bookingInterval.before')}</span>
+                            </label>
+                            <div className="flex items-center gap-2">
+                                <input className="input" type="number" defaultValue={activity.buffer_before}
+                                       min={0}
+                                       onChange={(e) => handleBufferChange(e.target.value, activity.after)}
+                                />
+                                <div>{t('base.minutes')}</div>
+                            </div>
+
+                            <label className="label cursor-pointer">
+                                <span className="label-text">{t('activity.edit.bookingInterval.after')}</span>
+                            </label>
+                            <div className="flex items-center gap-2">
+                                <input className="input" type="number" defaultValue={activity.buffer_after}
+                                       min={0}
+                                       onChange={(e) => handleBufferChange(activity.before, e.target.value)}
+                                />
+                                <div>{t('base.minutes')}</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="form-control">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.bookingLeadTime')}</span>
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.bookingLeadTime')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.bookingLeadTime.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
-                        <input className="input" type="number" defaultValue={activity.minimum_schedule_before}
-                               min={0}
-                               onChange={(e) => handleMinimumScheduleBeforeChange(e.target.value)}
-                        />
+
+                        <div className="flex items-center gap-2">
+                            <input className="input" type="number" defaultValue={activity.minimum_schedule_before}
+                                   min={0}
+                                   onChange={(e) => handleMinimumScheduleBeforeChange(e.target.value)}
+                            />
+                            <div>{t('base.minutes')}</div>
+                        </div>
                     </div>
 
-                    <div className="form-control">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">{t('activity.edit.startTimeIncrement')}</span>
+                    <div className="form-control max-w-lg">
+                        <label className="label items-center">
+                            <div className="label-text flex items-center gap-2">
+                                <span className="label-text">{t('activity.edit.startTimeIncrement')}</span>
+                                <span className="label-text-alt tooltip tooltip-top"
+                                      data-tip={t('activity.edit.startTimeIncrement.tooltips')}>
+                                <QuestionMarkCircleIcon className="w-4 h-4"/>
+                            </span>
+                            </div>
                         </label>
+
                         <select className="select select-bordered" defaultValue={activity.start_time_increment}
                                 onChange={handleStartTimeIncrementChange}>
                             <option value={15}>15 {t('base.short.minute')}</option>
@@ -456,5 +606,7 @@ export default function ActivityEdit() {
                 </form>
             </div>
         </div>
+
+        {showLocationChangeModel && <LocationChangeModal onConfirm={handleLocationChange}/>}
     </main>
 }

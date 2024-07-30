@@ -76,7 +76,7 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                             </li>
                             <div className="divider my-0"></div>
                             <li><label className="label cursor-pointer">
-                                <span className="label-text">{t('activity.activitycard.onoff')}</span>
+                                <span className="label-text">{t('activity.activityCard.onOff')}</span>
                                 <input type="checkbox" className="toggle toggle-primary"
                                        defaultChecked={activity.is_open}
                                        onChange={(e) => onToggle(activity.id, e.target.checked)}
@@ -88,11 +88,11 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                 <div className="divider my-0"></div>
                 <div className="py-4 flex flex-col gap-4 ">
                     <div>
-                        {activity.duration},{activity.activity_type}
+                        {activity.duration} {t('base.short.minute')} {t("activity.activityCard.type." + activity.activity_type)}
                     </div>
                     <a className="link link-primary"
                        href={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}>
-                        {t('activity.activitycard.viewbookingpage')}
+                        {t('activity.activityCard.viewBookingPage')}
                     </a>
                 </div>
                 <div className="divider my-0"></div>
@@ -102,7 +102,7 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                         data-clipboard-text={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}
                         className="btn btn-primary text-white">
                         <DocumentDuplicateIcon className="h-5 w-5"/>
-                        {t('activity.activitycard.copylink')}
+                        {t('activity.activityCard.copyLink')}
                     </button>
                 </div>
             </div>

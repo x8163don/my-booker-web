@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const login = async (email, thirtyPartyToken, loginType) => {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/login`, {
         method: 'POST',
@@ -12,8 +14,12 @@ export const login = async (email, thirtyPartyToken, loginType) => {
 
 export const check = async (token) => {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/check`, {
-        method: 'POST',
-        body: JSON.stringify({token})
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${Cookies.get('token')}`
+        },
     })
+
     return response;
 }
