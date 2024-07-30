@@ -89,7 +89,8 @@
   "activity.edit.startTimeIncrement": "Start time increment",
   "activity.edit.startTimeIncrement.tooltips": "Set the time increment for each available booking slot. For example, setting it to 15 minutes means the available booking times will be at the top of the hour, 15, 30, and 45 minutes past each open period.",
 
-  "booking.index.location.phone": "on phone call",
+  "booking.index.location.phone": "Phone call",
+  "booking.index.selectBookingTime.title": "Select booking time",
   "booking.index.bookingTime.title": "Booking Time",
   "booking.index.contactInformation.title": "Contact information",
   "booking.index.contactInformation.name": "Name",

@@ -90,6 +90,7 @@
 
   "booking.index.location.phone": "電話會議",
   "booking.index.bookingTime.title": "預訂時間",
+  "booking.index.selectBookingTime.title": "選擇預訂時間",
   "booking.index.contactInformation.title": "聯繫信息",
   "booking.index.contactInformation.name": "姓名",
   "booking.index.contactInformation.namePlaceholder": "輸入姓名",

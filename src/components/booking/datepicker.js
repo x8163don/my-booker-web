@@ -92,7 +92,7 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                 formattedDate = format(day, 'yyyy-MM-dd');
                 const cloneDay = day;
                 days.push(
-                    <div className="h-12 flex-1 p-1">
+                    <div className="h-14 flex-1 flex justify-center items-center">
                         <div className="indicator">
                             {availableTimesDic[formattedDate] && availableTimesDic[formattedDate].length > 0 && (
                                 <span
@@ -130,8 +130,8 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
             {renderCells()}
         </div>
 
-        <h2 className="text-2xl my-4">Select Time</h2>
-        <div className="grid grid-cols-3 gap-2">
+        <h2 className="text-2xl my-4">{t('booking.index.selectBookingTime.title')}</h2>
+        <div className="grid grid-cols-3 gap-2 h-40 overflow-y-auto">
             {
                 currentSelectDate &&
                 availableTimesDic[format(currentSelectDate, 'yyyy-MM-dd')] &&
