@@ -15,6 +15,8 @@ import Connect from "./pages/account/connect";
 import Appointment from "./pages/appointment";
 import Cancel from "./pages/appointment/cancel";
 import {checkAuthTokenLoader} from "./utils/auth";
+import NotFound from "./pages/system/NotFound";
+import SingleWithFooter from "./components/layout/SingleWithFooter";
 
 export const router = createBrowserRouter([
     {
@@ -35,7 +37,10 @@ export const router = createBrowserRouter([
     },
     {
         path: '/booking/:url_name/:booking_key',
-        element: <Booking/>,
+        element: <SingleWithFooter/>,
+        children: [
+            {path: '', element: <Booking/>}
+        ]
     },
     {
         path: '/appointment',
@@ -85,5 +90,13 @@ export const router = createBrowserRouter([
             {path: 'connect', element: <Connect/>}
         ]
     },
+
+    {
+        path: '*',
+        element: <SingleColumn/>,
+        children: [
+            {path: '*', element: <NotFound/>}
+        ]
+    }
 
 ])

@@ -112,5 +112,8 @@
   "sidebar.activity": "Activity",
   "sidebar.myAppointment": "My Appointment",
   "sidebar.schedule": "Schedule",
-  "sidebar.account": "Account"
+  "sidebar.account": "Account",
+
+  "system.notFound": "Page Not Found",
+  "system.action.backToHomePage": "Back to Home Page"
 }

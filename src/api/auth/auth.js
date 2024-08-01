@@ -17,7 +17,7 @@ export const check = async (token) => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `${Cookies.get('token')}`
+            'Authorization': `${token}`
         },
     })
 

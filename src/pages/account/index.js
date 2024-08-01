@@ -13,6 +13,7 @@ import {PlusIcon} from "@heroicons/react/24/outline";
 import {useTranslation} from "react-i18next";
 import {me, setLanguage, setTimeZone} from "../../api/customer";
 import TimeZoneSelector from "../../components/TimeZoneSelector";
+import LanguageSelector from "../../components/base/LanguageSelector";
 
 export default function Account() {
 
@@ -130,10 +131,8 @@ export default function Account() {
         })
     };
 
-    const handleChangeLanguage = (e) => {
-        setLanguageMutate({language: e.target.value})
-        i18n.changeLanguage(e.target.value);
-        localStorage.setItem('language', e.target.value);
+    const handleChangeLanguage = (value) => {
+        setLanguageMutate({language: value})
     };
 
     const handleChangeTimeZone = (tz) => {
@@ -149,14 +148,13 @@ export default function Account() {
                         <span className="label-text">{t('account.index.preferences.language')}</span>
                     </label>
 
-                    <select className="select select-bordered w-full max-w-md" defaultValue={customer.language}
-                            onChange={handleChangeLanguage}>
-                        <option value="en">English</option>
-                        <option value="zh-tw">繁體中文</option>
-                    </select>
+                    <LanguageSelector className="max-w-md"
+                                      onLanguageChange={handleChangeLanguage}
+                    />
+
                 </div>
 
-                <div className="form-control">
+                <div className="form-control max-w-md">
                     <label className="label">
                         <span className="label-text">{t('account.index.preferences.timezone')}</span>
                     </label>
@@ -212,7 +210,5 @@ export default function Account() {
                 </div>
             </div>
         </div>
-
-
     </div>
 }

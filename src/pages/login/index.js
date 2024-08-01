@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {TOAST_TYPES, sendToast} from "../../utils/toast";
 import {ToastContainer} from "react-toastify";
 import {useTranslation} from "react-i18next";
+import Logo from "../../assets/logo/logo.svg";
 
 export default function Login() {
 
@@ -39,10 +40,9 @@ export default function Login() {
     return (
         <main className="min-h-screen flex items-center justify-center">
             <div className="bg-gray-700 w-full max-w-md p-8 shadow-lg rounded-lg">
-                <div className="avatar mb-8 flex justify-center">
-                    <div className="w-24 rounded">
-                        {/*TODO*/}
-                        <img alt="logo" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+                <div className="mb-8 flex justify-center">
+                    <div className="w-24 h-24 rounded">
+                        <img alt="logo" src={Logo}/>
                     </div>
                 </div>
                 <form onSubmit={handleSubmit(handleLoginWithEmail)}>

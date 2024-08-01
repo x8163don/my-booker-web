@@ -110,5 +110,8 @@
   "sidebar.activity": "活動管理",
   "sidebar.myAppointment": "我的預訂",
   "sidebar.schedule": "開放時間",
-  "sidebar.account": "帳戶"
+  "sidebar.account": "帳戶",
+
+  "system.notFound": "找不到頁面",
+  "system.action.backToHomePage": "回首頁"
 }

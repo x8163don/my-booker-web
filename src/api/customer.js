@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import i18next from 'i18next';
 
 export const me = async ({signal}) => {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/customer/me`, {
@@ -23,7 +24,9 @@ export const createCustomer = async ({signal}) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Cookies.get('token')}`
+            'Authorization': `Bearer ${Cookies.get('token')}`,
+            'Language': i18next.language,
+            'TimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
         },
         AbortSignal: signal
     })
