@@ -18,7 +18,7 @@ import LanguageSelector from "../../components/base/LanguageSelector";
 export default function Account() {
 
     const navigate = useNavigate();
-    const {t, i18n} = useTranslation()
+    const {t} = useTranslation()
 
     const [calendarItems, setCalendarItems] = useState([]);
     const [targetCalendarItem, setTargetCalendarItem] = useState(null);

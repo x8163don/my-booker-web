@@ -1,14 +1,12 @@
-import {useLocation} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
+import Logo from "../assets/logo/logo.svg";
 
 export default function Sidebar() {
-    const location = useLocation()
     const {t} = useTranslation();
     return (
         <div className="bg-gray-800 text-white w-52 flex-shrink-0 min-h-screen">
             <div className="p-4">
-                {/*TODO*/}
-                <h2 className="text-xl font-bold">側邊欄</h2>
+                <img src={Logo} alt="Logo" className="w-12 h-12"/>
             </div>
             <ul className="menu menu-vertical">
                 <li>
