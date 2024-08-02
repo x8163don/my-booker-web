@@ -10,6 +10,4 @@ export const checkAuthTokenLoader = async () => {
     } else {
         return redirect('/login')
     }
-
-    return
 }
