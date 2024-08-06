@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 export default function SimpleFooter() {
     return <footer
-        className="absolute bottom-0 h-16 footer bg-neutral text-neutral-content items-center p-4 text-center">
+        className="absolute bottom-0 h-16 footer items-center p-4 text-center">
         <div className="container mx-auto max-w-7xl flex justify-between items-center">
             <aside className="flex items-center">
                 <Link to="/">

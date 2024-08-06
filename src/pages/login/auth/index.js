@@ -56,7 +56,7 @@ export default function Auth() {
 
 
     return <main className="min-h-screen flex items-center justify-center">
-        <div className="card bg-gray-700 min-w-md max-w-md p-8 shadow-lg rounded-lg">
+        <div className="card card-bordered min-w-md max-w-md p-8 shadow-lg rounded-lg">
             <div className="card-body">
 
                 <div className="mb-8 flex justify-center">

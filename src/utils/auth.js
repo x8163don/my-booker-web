@@ -6,8 +6,9 @@ export const checkAuthTokenLoader = async () => {
     const resp = await check(Cookies.get('token'))
 
     if (resp.ok) {
-        return
+        return true
     } else {
+        Cookies.remove('token')
         return redirect('/login')
     }
 }

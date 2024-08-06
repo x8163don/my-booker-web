@@ -39,7 +39,7 @@ export default function Login() {
     }
     return (
         <main className="min-h-screen flex items-center justify-center">
-            <div className="bg-gray-700 w-full max-w-md p-8 shadow-lg rounded-lg">
+            <div className="card card-bordered w-full max-w-md p-8 shadow-lg rounded-lg">
                 <div className="mb-8 flex justify-center">
                     <div className="w-24 h-24 rounded">
                         <img alt="logo" src={Logo}/>

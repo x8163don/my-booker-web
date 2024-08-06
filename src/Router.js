@@ -65,7 +65,8 @@ export const router = createBrowserRouter([
             {path: '', element: <Activity/>},
             {path: 'new', element: <ActivityNew/>},
         ]
-    }, {
+    },
+    {
         path: '/activity/:id/edit',
         loader: checkAuthTokenLoader,
         element: <SingleColumn/>,
