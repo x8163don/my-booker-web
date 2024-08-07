@@ -7,10 +7,11 @@ import AppointmentCard from "../../components/appointment/AppointmentCard";
 import {queryClient} from "../../api";
 import {sendToast, TOAST_TYPES} from "../../utils/toast";
 import {useTranslation} from "react-i18next";
+import {InboxIcon} from "@heroicons/react/24/outline";
 
 export default function Appointment() {
 
-    const t = useTranslation()
+    const {t} = useTranslation()
 
     const {
         data: appointments,
@@ -41,6 +42,13 @@ export default function Appointment() {
 
     if (isAppointmentError) {
         return <Error/>
+    }
+
+    if (appointments.length === 0) {
+        return <div className="h-full flex flex-col items-center justify-center text-center p-4">
+            <InboxIcon className="h-16 w-16 text-gray-400 mb-4"/>
+            <p className="text-lg text-gray-500">{t('appointment.emptyState')}</p>
+        </div>
     }
 
     return <div className="card">

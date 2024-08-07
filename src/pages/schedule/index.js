@@ -129,7 +129,7 @@ export default function Schedule() {
     return <div>
         <input ref={nameInputRef}
                type="text"
-               placeholder="Schedule Name"
+               placeholder={t("schedule.index.input.placeholder")}
                className={"input input-bordered w-full max-w-xs mr-2" + (isNameInputError ? " input-error" : "")}/>
 
         <button className={"btn btn-primary text-white"}
@@ -171,11 +171,12 @@ export default function Schedule() {
                                 </button>
                             </div>
 
-                            <AvailableTimeSelector
-                                availableTimes={schedule?.available_times}
-                                onEventsChange={(availableTimes) => eventsChangeHandler(schedule.id, availableTimes)}
-                            />
-
+                            <div className="px-32">
+                                <AvailableTimeSelector
+                                    availableTimes={schedule?.available_times}
+                                    onEventsChange={(availableTimes) => eventsChangeHandler(schedule.id, availableTimes)}
+                                />
+                            </div>
 
                             <div className="flex justify-end py-4">
                                 <button className="btn btn-primary text-white"

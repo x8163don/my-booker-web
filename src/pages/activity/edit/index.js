@@ -383,7 +383,7 @@ export default function ActivityEdit() {
     }
 
     return <main className="min-h-screen p-16">
-        <div className="min-h-screen bg-base-200 flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
             <div className="card-body max-w-7xl">
                 <div className="card-title">
                     <button className="btn btn-link text-lg" onClick={handleBack}><ArrowLeftIcon

@@ -89,25 +89,25 @@ export default function Booking() {
 
     return <main className="min-h-screen flex items-center justify-center">
         {
-            page === 1 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
+            page === 1 && <div className="card max-w-5xl shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
                 <div className="card-body flex flex-col md:flex-row">
-                    <div className="w-1/3">
-                        <h2 className="card-title text-2xl text-white my-5">{bookingDetail.name}</h2>
-                        <div className="flex items-center text-white my-2">
+                    <div className="w-1/2">
+                        <h2 className="card-title text-2xl my-5">{bookingDetail.name}</h2>
+                        <div className="flex items-center my-2">
                             <ClockIcon className="h-5 w-5 mr-2"/>{bookingDetail.duration} {t('base.minute')}
                         </div>
                         {bookingDetail?.location_type === "CellPhone" && (
-                            <div className="flex items-center text-white my-2">
+                            <div className="flex items-center my-2">
                                 <PhoneIcon className="h-5 w-5 mr-2"/>{t('booking.index.location.phone')}
                             </div>
                         )}
                         <div
-                            className="card-description text-white"
+                            className="card-description"
                             dangerouslySetInnerHTML={{__html: bookingDetail.description}}
                         />
                     </div>
                     <div className="divider divider-horizontal m-0"></div>
-                    <div className="flex-1 px-7">
+                    <div className="flex-1 px-2 ">
                         <DatePicker
                             timezone={timezone}
                             allowAppointments={bookingDetail.allow_appointments}
@@ -120,7 +120,7 @@ export default function Booking() {
         }
 
         {
-            page === 2 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
+            page === 2 && <div className="card max-w-4xl shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
                 <div className="card-body">
                     <span className="link link-primary">
                         <ArrowLeftIcon
@@ -128,8 +128,8 @@ export default function Booking() {
                             onClick={() => setPage(1)}/>
                     </span>
                     <div className="flex-1 w-full text-center">
-                        <h2 className="text-white items-center">{t('booking.index.bookingTime.title')}</h2>
-                        <div className="text-white text-lg">
+                        <h2 className="items-center">{t('booking.index.bookingTime.title')}</h2>
+                        <div className="text-lg">
                             {format(selectBookingTime, "yyyy-MM-dd HH:mm")}({timezoneStr})
                         </div>
                     </div>
@@ -185,7 +185,7 @@ export default function Booking() {
                             </div>
                         </label>
 
-                        <button type="submit" className="btn btn-primary text-lg text-white w-full max-w-xs mt-10"
+                        <button type="submit" className="btn btn-primary text-lg w-full max-w-xs mt-10"
                                 disabled={isConfirmAppointmentPending}>
                             {isConfirmAppointmentPending ?
                                 <span className="loading loading-spinner"></span> : t('booking.index.confirmBooking')}
@@ -196,19 +196,24 @@ export default function Booking() {
         }
 
         {
-            page === 3 && <div className="card max-w-4xl bg-gray-700 shadow-lg rounded-lg min-h-96 lg:w-3/4 xl:w-1/2">
-                <div className="card-body items-center text-center">
-                    <h2 className="card-title">{t("booking.index.confirmation.success")}</h2>
-                    <div className="card-description text-white">
-                        <div>{t("booking.index.confirmation.success.message", {activityName: bookingDetail.name})}</div>
-                        <div
-                            className="text-primary text-2xl font-bold">  {format(selectBookingTime, "yyyy-MM-dd HH:mm")}({timezoneStr})
+            page === 3 && <div className="card max-w-4xl shadow-lg rounded-lg lg:w-3/4 xl:w-1/2 mx-auto">
+                <div className="card-body items-center text-center p-6">
+                    <h2 className="card-title text-2xl font-semibold mb-4">
+                        {t("booking.index.confirmation.success")}
+                    </h2>
+                    <div className="card-description mb-6">
+                        <div className="text-lg">
+                            {t("booking.index.confirmation.success.message", {activityName: bookingDetail.name})}
+                        </div>
+                        <div className="text-primary text-2xl font-bold mt-2">
+                            {format(selectBookingTime, "yyyy-MM-dd HH:mm")} ({timezoneStr})
                         </div>
                     </div>
-
-                    <div className="flex items-center justify-center gap-2 mt-4">
+                    <div className="flex items-center justify-center gap-3 mt-6">
                         <EnvelopeIcon className="w-10 h-10"/>
-                        <div>{t("booking.index.confirmation.success.sendConfirmationEmail")}</div>
+                        <div className="text-lg">
+                            {t("booking.index.confirmation.success.sendConfirmationEmail")}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -96,12 +96,12 @@ export default function DatePicker({timezone, allowAppointments, onTimeSelected,
                         <div className="indicator">
                             {availableTimesDic[formattedDate] && availableTimesDic[formattedDate].length > 0 && (
                                 <span
-                                    className="indicator-item indicator-bottom indicator-center badge badge-xs badge-success top-7"/>
+                                    className="indicator-item indicator-bottom indicator-center badge badge-xs badge-primary top-7"/>
                             )}
                             <div
                                 className={`flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 
-                            ${isSameDay(day, new Date()) ? 'bg-blue-500 text-white' : ''} ${
-                                    isSameDay(day, currentSelectDate) ? 'bg-green-500 text-white' : ''
+                            ${isSameDay(day, new Date()) ? 'bg-info text-white' : ''} ${
+                                    isSameDay(day, currentSelectDate) ? 'bg-primary text-white' : ''
                                 }`}
                                 key={formattedDate}
                                 onClick={() => setCurrentSelectDate(cloneDay)}

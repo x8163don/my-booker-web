@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const AnimatedList = React.memo(
-    ({ className, children, delay = 1000 }) => {
+    ({ className, children, delay = 1500 }) => {
         const [index, setIndex] = useState(0);
         const childrenArray = React.Children.toArray(children);
 

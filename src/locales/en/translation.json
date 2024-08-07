@@ -37,6 +37,8 @@
   "home.hero.props1": "One link for customers to book your services",
   "home.hero.props2": "Save time on communication",
   "home.hero.props3": "Sync all appointments to Google Calendar",
+  "home.hero.before": "View old methods",
+  "home.hero.after": "View new methods",
   "home.hero.conversations.customer": "Customer",
   "home.hero.conversations.you": "You",
   "home.hero.conversations.minuteAgo": "{{minutes}}m ago",
@@ -49,6 +51,9 @@
   "home.hero.conversations6":"Those times are full too. What about Wednesday afternoon.",
   "home.hero.conversations7":"I have a meeting then.",
   "home.hero.conversations8":"It's too hard to find a time. Maybe next time. Thanks.",
+  "home.hero.after.conversations1":"Hi, I'm interested in your services. Can I book an appointment?",
+  "home.hero.after.conversations2":"Sure, you can book through the link below: <1>Booking link</1>",
+  "home.hero.after.conversations3":"Booked, looking forward to meeting you.",
 
   "home.demo.subtitle": "Understand MyBooker in 1 minute",
 
@@ -100,6 +105,7 @@
   "account.index.selectCalendarDefault": "Select calendar",
   "account.connect.google": "Connect to Google Calendar",
 
+  "appointment.emptyState": "No appointment",
   "appointment.cancel.title": "Cancel appointment",
   "appointment.cancel.message": "Are you sure you want to cancel your {{activityName}} event at {{dateTime}} ?",
   "appointment.cancel.confirm": "Confirm",
@@ -115,11 +121,14 @@
   "appointment.appointmentCard.cancel.message": "Are you sure you want to cancel this appointment?",
   "appointment.toast.cancel.success": "Successfully canceled!",
 
+  "activity.emptyState": "No activity",
   "activity.index.new": "New",
   "activity.activityCard.onOff": "On/Off",
   "activity.activityCard.viewBookingPage": "View booking page",
   "activity.activityCard.copyLink": "Copy Link",
   "activity.activityCard.type.OneOnOne": "One-on-one",
+  "activity.activityCard.delete.title": "Delete activity",
+  "activity.activityCard.delete.message": "Are you sure you want to delete this activity?",
   "activity.new.title": "Create new activity",
   "activity.new.activityName": "Activity name",
   "activity.new.activityNamePlaceholder": "Enter activity name",
@@ -167,6 +176,8 @@
   "booking.index.confirmation.success.message": "You have booked {{activityName}} event.",
   "booking.index.confirmation.success.sendConfirmationEmail": "We will send the appointment information to your email later",
   "booking.index.confirmation.error": "Booking failed!",
+
+  "schedule.index.input.placeholder": "Enter schedule name",
 
   "login.index.continue": "Continue",
   "login.email.title": "Login Link Sent",

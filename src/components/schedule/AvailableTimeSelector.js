@@ -3,11 +3,13 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import {useEffect, useState} from "react";
 import moment from "moment/moment";
 import "./AvailableTimeSelector.css"
+import {useTranslation} from "react-i18next";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar)
 
 export default function AvailableTimeSelector({availableTimes, onEventsChange}) {
+    const {t} = useTranslation()
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function AvailableTimeSelector({availableTimes, onEventsChange}) 
         })
 
         onEventsChange(availableTimes)
-    }, [events,onEventsChange]);
+    }, [events, onEventsChange]);
 
 
     const handleSelectSlot = ({start, end}) => {
@@ -161,8 +163,7 @@ export default function AvailableTimeSelector({availableTimes, onEventsChange}) 
         }}
         formats={{
             timeGutterFormat: 'HH:mm',
-            dayFormat: (date, culture, localizer) =>
-                localizer.format(date, 'dddd', culture),
+            dayFormat: (date, culture, localizer) => t(`base.week.${moment(date).format('dddd').toLowerCase()}`),
         }}
         style={{height: 700}}
     />

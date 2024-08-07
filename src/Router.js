@@ -17,6 +17,7 @@ import Cancel from "./pages/appointment/cancel";
 import {checkAuthTokenLoader} from "./utils/auth";
 import NotFound from "./pages/system/NotFound";
 import SingleWithFooter from "./components/layout/SingleWithFooter";
+import Empty from "./components/layout/Empty";
 
 export const router = createBrowserRouter([
     {
@@ -69,7 +70,7 @@ export const router = createBrowserRouter([
     {
         path: '/activity/:id/edit',
         loader: checkAuthTokenLoader,
-        element: <SingleColumn/>,
+        element: <Empty/>,
         children: [
             {path: '', element: <ActivityEdit/>},
         ]

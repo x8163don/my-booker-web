@@ -1,5 +1,5 @@
-import {CheckIcon} from "@heroicons/react/24/outline";
-import {useTranslation} from "react-i18next";
+import {ArrowLeftIcon, CheckIcon, SparklesIcon} from "@heroicons/react/24/outline";
+import {Trans, useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {AnimatedList} from "../ui/AnimatedList";
 import {cn} from "../../utils/cn";
@@ -11,68 +11,94 @@ export default function Hero() {
     const navigate = useNavigate();
 
     const [conversations, setConversations] = useState([])
+    const [showAfter, setShowAfter] = useState(false)
 
     useEffect(() => {
-        setConversations([
-            {
-                name: t("home.hero.conversations.customer"),
-                description: t("home.hero.conversations1"),
-                time: t("home.hero.conversations.minuteAgo", {minutes: 10}),
-                icon: "👤",
-                color: "#FFB800",
-            },
-            {
-                name: t("home.hero.conversations.you"),
-                description: t("home.hero.conversations2"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#00C9A7",
-            },
-            {
-                name: t("home.hero.conversations.customer"),
-                description: t("home.hero.conversations3"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#FFB800",
-            },
-            {
-                name: t("home.hero.conversations.you"),
-                description: t("home.hero.conversations4"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#00C9A7",
-            },
-            {
-                name: t("home.hero.conversations.customer"),
-                description: t("home.hero.conversations5"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#FFB800",
-            },
-            {
-                name: t("home.hero.conversations.you"),
-                description: t("home.hero.conversations6"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#00C9A7",
-            },
-            {
-                name: t("home.hero.conversations.customer"),
-                description: t("home.hero.conversations7"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#FFB800",
-            },
-            {
-                name: t("home.hero.conversations.customer"),
-                description: t("home.hero.conversations8"),
-                time: t("home.hero.conversations.fewSecondsAgo"),
-                icon: "👤",
-                color: "#FFB800",
-            },
-        ])
-
-    }, [i18n.language]);
+        if (showAfter) {
+            setConversations([
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.after.conversations1",
+                    time: t("home.hero.conversations.minuteAgo", {minutes: 10}),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+                {
+                    name: t("home.hero.conversations.you"),
+                    i18nkey: "home.hero.after.conversations2",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#00C9A7",
+                },
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.after.conversations3",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+            ])
+        } else {
+            setConversations([
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.conversations1",
+                    time: t("home.hero.conversations.minuteAgo", {minutes: 10}),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+                {
+                    name: t("home.hero.conversations.you"),
+                    i18nkey: "home.hero.conversations2",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#00C9A7",
+                },
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.conversations3",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+                {
+                    name: t("home.hero.conversations.you"),
+                    i18nkey: "home.hero.conversations4",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#00C9A7",
+                },
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.conversations5",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+                {
+                    name: t("home.hero.conversations.you"),
+                    i18nkey: "home.hero.conversations6",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#00C9A7",
+                },
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.conversations7",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+                {
+                    name: t("home.hero.conversations.customer"),
+                    i18nkey: "home.hero.conversations8",
+                    time: t("home.hero.conversations.fewSecondsAgo"),
+                    icon: "👤",
+                    color: "#FFB800",
+                },
+            ])
+        }
+    }, [showAfter, i18n.language]);
 
     return <section id="hero" className="max-w-7xl mx-auto px-8 py-12 px-4 sm:px-6 lg:py-32">
         <div className="flex flex-col lg:flex-row items-center justify-between">
@@ -100,24 +126,36 @@ export default function Hero() {
                 </div>
             </div>
 
-            <div className="w-full lg:w-1/2 mt-8 lg:mt-0 flex justify-center lg:justify-end">
+            <div className="w-full lg:w-1/2 mt-8 lg:mt-0 flex flex-col justify-center lg:justify-end gap-8">
                 <div
                     className={cn(
                         "relative flex h-[500px] w-full flex-col p-6 overflow-hidden rounded-lg border bg-background md:shadow-xl",
                     )}
                 >
-                    <AnimatedList delay={1500}>
+                    <AnimatedList
+                        delay={2000}>
                         {conversations.map((item, idx) => (
                             <Notification {...item} key={idx}/>
                         ))}
                     </AnimatedList>
+                </div>
+
+                <div className="w-full flex justify-center">
+                    <button
+                        className={`btn btn-outline ${showAfter ? "" : "btn-primary"}`}
+                        onClick={() => setShowAfter(!showAfter)}
+                    >
+                        { showAfter ? <ArrowLeftIcon className="h-5 w-5"></ArrowLeftIcon>
+                        : <SparklesIcon className="h-5 w-5"></SparklesIcon>}
+
+                        {showAfter ? t("home.hero.before") : t("home.hero.after")}</button>
                 </div>
             </div>
         </div>
     </section>
 }
 
-const Notification = ({name, description, icon, color, time}) => {
+const Notification = ({name, description, i18nkey, icon, color, time}) => {
     return (
         <figure
             className={cn(
@@ -146,9 +184,13 @@ const Notification = ({name, description, icon, color, time}) => {
                         <span className="mx-1">·</span>
                         <span className="text-xs text-gray-500">{time}</span>
                     </figcaption>
-                    <p className="text-lg text-gray-700 font-normal">
-                        {description}
-                    </p>
+
+                    <Trans className="text-lg text-gray-700 font-normal" i18nKey={i18nkey}
+                           components={{
+                               1: <a href="#demo" className="link link-info"></a>
+                           }}
+                    >
+                    </Trans>
                 </div>
             </div>
         </figure>

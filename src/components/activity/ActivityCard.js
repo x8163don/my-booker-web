@@ -32,8 +32,8 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
     const DeleteConfirmModal = ({onConfirm}) => (
         <div className="modal modal-open">
             <div className="modal-box">
-                <h2 className="text-xl mb-4">Confirm Deletion</h2>
-                <p>Are you sure you want to delete this activity?</p>
+                <h2 className="text-xl mb-4">{t('activity.activityCard.delete.title')}</h2>
+                <p>{t('activity.activityCard.delete.message')}</p>
                 <div className="mt-4 flex justify-end">
                     <button
                         className="btn btn-outline mr-2"
@@ -52,7 +52,7 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
     );
 
     return <>
-        <div className="card bg-neutral">
+        <div className="card card-bordered">
             <div className="card-body">
                 <div className="flex justify-between items-center">
                     <div className="card-title">
@@ -100,7 +100,7 @@ export default function ActivityCard({customer, activity, onEdit, onDelete, onTo
                     <button
                         ref={copyRef}
                         data-clipboard-text={window.location.origin + '/booking/' + customer.url_name + '/' + activity.booking_key}
-                        className="btn btn-primary text-white">
+                        className="btn btn-primary">
                         <DocumentDuplicateIcon className="h-5 w-5"/>
                         {t('activity.activityCard.copyLink')}
                     </button>

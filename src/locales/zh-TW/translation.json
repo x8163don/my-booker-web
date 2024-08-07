@@ -41,6 +41,8 @@
   "home.hero.props1": "一個網址即可讓客戶預約你的服務",
   "home.hero.props2": "節省溝通往返",
   "home.hero.props3": "同步所有預約到Google Calendar",
+  "home.hero.before": "查看舊方法",
+  "home.hero.after": "查看新方法",
   "home.hero.conversations.customer": "客戶",
   "home.hero.conversations.you": "你",
   "home.hero.conversations.minuteAgo": "{{minutes}}分鐘前",
@@ -53,6 +55,9 @@
   "home.hero.conversations6":"這兩個時段也已經滿了，週四下午可以嗎？",
   "home.hero.conversations7":"我有一個會議了",
   "home.hero.conversations8":"看來沒有合適的時間，下次再說吧",
+  "home.hero.after.conversations1":"你好，我想預約你的服務",
+  "home.hero.after.conversations2":"好的，您可以透過這個底下的網址來預約<1>預約網址</1>",
+  "home.hero.after.conversations3":"已預約，期待與您見面",
 
   "home.demo.subtitle": "1分鐘快速了解 MyBooker",
 
@@ -104,6 +109,7 @@
   "account.index.selectCalendarDefault": "選擇日曆",
   "account.connect.google": "連接到 Google 日曆",
 
+  "appointment.emptyState": "尚無預約",
   "appointment.cancel.title": "取消預約",
   "appointment.cancel.message": "您確定要取消 {{activityName}} {{dateTime}} 的預約嗎？",
   "appointment.cancel.confirm": "確認",
@@ -119,11 +125,14 @@
   "appointment.appointmentCard.cancel.message": "您確定要取消此預約嗎？",
   "appointment.toast.cancel.success": "已取消",
 
+  "activity.emptyState": "尚無活動",
   "activity.index.new": "新增",
   "activity.activityCard.onOff": "開/關",
   "activity.activityCard.viewBookingPage": "查看預訂頁面",
   "activity.activityCard.copyLink": "複製連結",
   "activity.activityCard.type.OneOnOne": "一對一",
+  "activity.activityCard.delete.title": "刪除活動",
+  "activity.activityCard.delete.message": "您確定要刪除此活動嗎？",
   "activity.new.title": "建立新活動",
   "activity.new.activityName": "活動名稱",
   "activity.new.activityNamePlaceholder": "輸入活動名稱",
@@ -155,6 +164,8 @@
   "activity.edit.bookingLeadTime.tooltips": "設定客戶需要在預訂時間前多久才能完成預訂。例如，設定為2小時，則客戶需要在預訂時間前2小時才能完成預訂。",
   "activity.edit.startTimeIncrement": "開始時間增量",
   "activity.edit.startTimeIncrement.tooltips": "設定每個可用預訂時段的時間增量。例如，設定為15分鐘，則可用的預訂時間將是每個開放時段的整點、15分、30分、45分。",
+
+  "schedule.index.input.placeholder": "輸入排程名稱",
 
   "booking.index.location.phone": "電話會議",
   "booking.index.bookingTime.title": "預訂時間",

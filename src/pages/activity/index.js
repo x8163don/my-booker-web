@@ -5,7 +5,7 @@ import {CACHE_KEY, DAY, MINUTE} from "../../utils/constants";
 import {deleteActivity, listActivities, switchActivity} from "../../api/activity/activity";
 import Loading from "../../components/ui/Loading";
 import Error from "../../components/ui/Error";
-import {PlusIcon} from "@heroicons/react/24/outline";
+import {InboxIcon, PlusIcon} from "@heroicons/react/24/outline";
 import {queryClient} from "../../api";
 import {sendToast, TOAST_TYPES} from "../../utils/toast";
 import {me} from "../../api/customer";
@@ -96,15 +96,24 @@ export default function Activity() {
             </button>
         </div>
 
+        {
+            activities && activities.length === 0 &&
+            <div className="h-full flex flex-col items-center justify-center text-center p-4">
+                <InboxIcon className="h-16 w-16 text-gray-400 mb-4"/>
+                <p className="text-lg text-gray-500">{t('activity.emptyState')}</p>
+            </div>
+        }
+
         <div className="grid grid-cols-3 gap-4">
-            {activities && activities.map((activity) => <ActivityCard
-                key={activity.id}
-                customer={customer}
-                activity={activity}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                onToggle={handleToggle}
-            />)
+            {
+                activities && activities.map((activity) => <ActivityCard
+                    key={activity.id}
+                    customer={customer}
+                    activity={activity}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    onToggle={handleToggle}
+                />)
             }
         </div>
     </div>
