@@ -1,8 +1,6 @@
 import Logo from "../assets/logo/logo.svg"
-import {useTranslation} from "react-i18next";
 
 export default function Footer() {
-    const {t} = useTranslation()
 
     return <footer className="footer max-w-7xl mx-auto px-8 py-12 px-4 sm:px-6">
         <aside>

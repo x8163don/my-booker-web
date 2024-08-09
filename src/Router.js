@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/appointment',
-        element: <SingleColumn/>,
+        element: <SingleWithFooter/>,
         children: [
             {path: 'cancel', element: <Cancel/>},
         ]
