@@ -11,14 +11,14 @@ export default function Footer() {
                 MyBooker
             </p>
         </aside>
-        <nav>
-            <h6 className="footer-title">{t('footer.services')}</h6>
-            <a className="link link-hover">MyBooker</a>
-        </nav>
-        <nav>
-            <h6 className="footer-title">{t('footer.legal')}</h6>
-            <a className="link link-hover">{t('footer.legal.terms')}</a>
-            <a className="link link-hover">{t('footer.legal.privacy')}</a>
-        </nav>
+        {/*<nav>*/}
+        {/*    <h6 className="footer-title">{t('footer.services')}</h6>*/}
+        {/*    <a className="link link-hover">MyBooker</a>*/}
+        {/*</nav>*/}
+        {/*<nav>*/}
+        {/*    <h6 className="footer-title">{t('footer.legal')}</h6>*/}
+        {/*    <a className="link link-hover">{t('footer.legal.terms')}</a>*/}
+        {/*    <a className="link link-hover">{t('footer.legal.privacy')}</a>*/}
+        {/*</nav>*/}
     </footer>
 }
