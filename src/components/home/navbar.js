@@ -39,14 +39,14 @@ export default function Navbar() {
                             onClick={toggleMenu}
                         >
                             <span className="sr-only"></span>
-                            {menuOpen ? <img src={Close} className="block w-6 h-6"/> :
-                                <img src={Menu} className="block w-6 h-6"/>}
+                            {menuOpen ? <img src={Close} alt="close" className="block w-6 h-6"/> :
+                                <img src={Menu} alt="menu" className="block w-6 h-6"/>}
                         </button>
                     </div>
                     <div className="flex items-center gap-2 min-w-28">
-                        <a href="">
+                        <a href="/activity">
                                 <span>
-                                <img src={Logo} className="block w-10 h-10"/>
+                                <img src={Logo} alt="logo" className="block w-10 h-10"/>
                                 </span>
                         </a>
                         <div>MyBooker</div>

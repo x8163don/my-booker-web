@@ -4,7 +4,6 @@ import Demo from "../../components/home/demo";
 import Feature from "../../components/home/feature";
 import Price from "../../components/home/price";
 import FAQ from "../../components/home/faq";
-import AnimatedListDemo from "../../components/home/AnimatedListDemo";
 
 export default function Home() {
     return <main>

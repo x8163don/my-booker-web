@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {BellIcon, CalendarIcon, ClockIcon, CpuChipIcon} from "@heroicons/react/24/outline";
+import {BellIcon, CalendarIcon, ClockIcon} from "@heroicons/react/24/outline";
 
 export default function Feature() {
     const {t} = useTranslation();

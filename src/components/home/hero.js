@@ -98,7 +98,7 @@ export default function Hero() {
                 },
             ])
         }
-    }, [showAfter, i18n.language]);
+    }, [showAfter, i18n.language, t]);
 
     return <section id="hero" className="max-w-7xl mx-auto px-8 py-12 px-4 sm:px-6 lg:py-32">
         <div className="flex flex-col lg:flex-row items-center justify-between">
@@ -145,8 +145,8 @@ export default function Hero() {
                         className={`btn btn-outline ${showAfter ? "" : "btn-primary"}`}
                         onClick={() => setShowAfter(!showAfter)}
                     >
-                        { showAfter ? <ArrowLeftIcon className="h-5 w-5"></ArrowLeftIcon>
-                        : <SparklesIcon className="h-5 w-5"></SparklesIcon>}
+                        {showAfter ? <ArrowLeftIcon className="h-5 w-5"></ArrowLeftIcon>
+                            : <SparklesIcon className="h-5 w-5"></SparklesIcon>}
 
                         {showAfter ? t("home.hero.before") : t("home.hero.after")}</button>
                 </div>
@@ -187,7 +187,7 @@ const Notification = ({name, description, i18nkey, icon, color, time}) => {
 
                     <Trans className="text-lg text-gray-700 font-normal" i18nKey={i18nkey}
                            components={{
-                               1: <a href="#demo" className="link link-info"></a>
+                               1: <a href="#demo" className="link link-info">url</a>
                            }}
                     >
                     </Trans>
